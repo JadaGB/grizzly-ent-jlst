@@ -100,7 +100,7 @@ public class Customer {
 	@Override
 	public String toString() {
 		return "Customer ID=: " + cusID + ", First Name: " + Fname + ", Last Name: " + LName + ", Email: " + email + ", Phone Number:"
-				+ phoneNum + ", Password: " + password + ", Event Name: " + evName + "\n";
+				+ phoneNum + ", Password: " + password + ", Event Name: " + evName + "\n ";
 	}
 
 	
