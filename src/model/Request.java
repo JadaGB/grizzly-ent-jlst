@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import controller.DBConnection;
-
 public class Request {
 	
 	private int reqID;
@@ -15,9 +13,6 @@ public class Request {
 	private float quotation;
 	private boolean confirmed;
 	
-	private PreparedStatement del;
-	private String query;
-	private Connection myConn;
 	
 	public Request() {
 		this.reqID = 0000;
@@ -27,14 +22,7 @@ public class Request {
 		this.quotation = 0;
 		this.confirmed = false;
 		
-		query="Delete request = ? WHERE id = ?";
-		myConn= DBConnection.getConnection();
-		try {
-			del=myConn.prepareStatement(query);
-		} catch (SQLException e) {
 		
-			e.printStackTrace();
-		}
 	}
 
 	public Request(int reqID, Customer cName, Equipment eName, Date requestDate, float quotation, boolean confirmed) {
@@ -103,12 +91,20 @@ public class Request {
 		this.confirmed = confirmed;
 	}
 	
-	public void delete(String reqId) {
+	public void delete(String reqId, Connection myConn) {
+		String query="Delete request where id = ?";
+		
 		try {
+			PreparedStatement del = myConn.prepareStatement(query);
 			del.setString(1, reqId);
 			del.execute();
+			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NullPointerException np) {
+			System.out.println("Null Expectation.");
+			np.getStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
