@@ -2,7 +2,11 @@ package model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+
+import controller.DBConnection;
 
 public class Request {
 	
@@ -12,6 +16,9 @@ public class Request {
 	private Date requestDate;
 	private float quotation;
 	private boolean confirmed;
+	private static Connection connection = null;
+	private Statement stmt = null;
+	private ResultSet result = null;
 	
 	
 	public Request() {
@@ -21,6 +28,7 @@ public class Request {
 		this.requestDate = new Date();
 		this.quotation = 0;
 		this.confirmed = false;
+		connection = DBConnection.getConnection();
 		
 		
 	}
@@ -42,7 +50,27 @@ public class Request {
 		this.quotation = obj.quotation;
 		this.confirmed = obj.confirmed;
 	}
-
+	
+	public void readAll() {
+		String selectSql = "SELECT * FROM ((customer c inner join request r on c.cid = r.cid)inner  join employee) ";
+		
+		try {
+			stmt = connection.createStatement();
+			result = stmt.executeQuery(selectSql);
+			while (result.next()) {
+				int reqID = result.getInt("reqID");
+				String cName = result.getString("customer.FirstName"+"customer.LastName");
+				String eName= result.getString("employee.FirstName"+"employee.LastName");
+				float quotation=Float.parseFloat(result.getString("quotation"));
+				Boolean confirmed = result.getBoolean("confirmed");
+			   System.out.println("Request ID: "+reqID+"\t Customer Name "+cName+
+					   "\t Employee Name: "+eName+"\t Quotation: "+quotation+"\tConfirmed: "+confirmed);
+			   
+			}
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+		}
+	}
 	public int getReqID() {
 		return reqID;
 	}
