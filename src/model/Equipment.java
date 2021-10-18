@@ -29,6 +29,7 @@ public class Equipment {
 		this.eqType = "";
 		this.rentalStatus = "";
 		this.cost = 0;
+		connection = DBConnection.getConnection();
 	}
 
 	public Equipment(int eqID, String eqName, String eqType, String rentalStatus, float cost) {
@@ -44,7 +45,7 @@ public class Equipment {
 		this.eqType = obj.eqType;
 		this.rentalStatus = obj.rentalStatus;
 		this.cost = obj.cost;
-		connection = DBConnection.getConnection();
+		
 	
 	}
 	
@@ -60,7 +61,7 @@ public class Equipment {
 				String eqName = result.getString("Name");
 				String rentalStatus= result.getString("rentalStatus");
 				float cost=Float.parseFloat(result.getString("cost"));			
-			    System.out.println("Equipment ID: "+eqID+"\t Equipment Name: "+eqName+"\t Result: "+rentalStatus+
+			    System.out.println("Equipment ID: "+eqId+"\t Equipment Name: "+eqName+"\t Result: "+rentalStatus+
 			    		"\tcost"+cost);
 			}
 		}catch(SQLException e) {
