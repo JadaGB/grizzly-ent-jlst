@@ -29,7 +29,7 @@ public class PastTransaction extends Request{
 
 	@Override
 	public String toString() {
-		return "PastTransaction= \n Request Information: \n" + super.toString()
+		return "PastTransaction \n Request Information: \n" + super.toString()
 				+ ", Completed: " + completed +  "\n";
 	}
 	

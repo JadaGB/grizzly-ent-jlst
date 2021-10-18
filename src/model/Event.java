@@ -40,7 +40,7 @@ public class Event {
 
 	@Override
 	public String toString() {
-		return "Event [evID=" + evID + ", eventName=" + eventName + "]";
+		return "Event ID: " + evID + ", Event Name: " + eventName + "\n";
 	}
 	
 	

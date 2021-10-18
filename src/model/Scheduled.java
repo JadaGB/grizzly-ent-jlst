@@ -22,7 +22,7 @@ public class Scheduled extends Request {
 	public Scheduled(Scheduled obj) {
 		super(obj);
 		this.returnDate = obj.returnDate;
-		//this.invoice = obj.invoice;
+	
 	}
 	
 	public Date getReturnDate() {
@@ -40,7 +40,7 @@ public class Scheduled extends Request {
 
 	@Override
 	public String toString() {
-		return "Scheduled Request:" +super.toString() + " Return Date: " + returnDate +"\n";
+		return "Scheduled Request: \n " +super.toString() + " Return Date: " + returnDate +"\n";
 	}
 	
 	
