@@ -1,5 +1,9 @@
 package model;
 
+import java.sql.*;
+
+import controller.DBConnection;
+
 public class Customer {
 	
 	private int cusID;
@@ -10,6 +14,10 @@ public class Customer {
 	private String password;
 	private Event evName;
 	
+	
+
+	
+	//Constructors
 	public Customer() {
 		this.cusID = 0000;
 		this.Fname = "John";
@@ -40,7 +48,54 @@ public class Customer {
 		this.evName = obj.evName;
 		
 	}
+	
+	
+	public void readAll(){
+		
+		 String query="SELECT * FROM Customer";
+		 String records=" ";
+		 Connection myconn=DBConnection.getConnection();
+	     try {
+			PreparedStatement read=myconn.prepareStatement(query);
+			ResultSet results=read.executeQuery();
+			
+			while(results.next()) {
+				records+="\nCustomer First Name: "+results.getString("FirstName")
+				+"Customer Last Name: "+results.getString("LastName")+"Customer Email: "+results.getString("Email")+
+				"Customer Phone#: "+results.getString("PhoneNumber: ");
+			}	
+			
+		}
+	     catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
+	private void read(int cid) {
+		 String query="SELECT FirstName,LastName,Email,PhoneNumber FROM Customer WHERE cid='"+cid+"'";
+		 
+		 Connection myconn=DBConnection.getConnection();
+	     try {
+			Statement read=myconn.createStatement();
+			ResultSet results=read.executeQuery(query);
+			while(results.next()) {
+				System.out.println("\nCustomer First Name: "+results.getString("FirstName")
+				+"Customer Last Name: "+results.getString("LastName")+
+				"Customer Email: "+results.getString("Email")+
+				"Customer Phone#: "+results.getString("PhoneNumber"));
+			}	
+			
+		}
+	     catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	//Getters and Setters
 	public int getCusID() {
 		return cusID;
 	}
