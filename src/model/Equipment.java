@@ -1,6 +1,15 @@
 package model;
 import java.sql.*;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import controller.DBConnection;
+
+
+
 public class Equipment {
 
 	private int eqID;
@@ -8,8 +17,13 @@ public class Equipment {
 	private String eqType;
 	private String rentalStatus;
 	private float cost;
+	private static Connection connection = null;
+	private Statement stmt = null;
+	private ResultSet result = null;
+
 	
 	public Equipment() {
+
 		this.eqID = 0000;
 		this.eqName = "";
 		this.eqType = "";
@@ -30,8 +44,33 @@ public class Equipment {
 		this.eqType = obj.eqType;
 		this.rentalStatus = obj.rentalStatus;
 		this.cost = obj.cost;
+		connection = DBConnection.getConnection();
+	
+	}
+	
+	
+	public void readAll() {
+		String selectSql = "SELECT * FROM equipment";
+		
+		try {
+			stmt = connection.createStatement();
+			result = stmt.executeQuery(selectSql);
+			while (result.next()) {
+				int eqId = result.getInt(eqID);
+				String eqName = result.getString("Name");
+				String eqType = result.getString("Type");
+				String rentalStatus= result.getString("rentalStatus");
+				float cost=Float.parseFloat(result.getString("cost"));			
+			    System.out.println("Equipment ID: "+eqID+"\t Equipment Name: "+eqName+"\t Result: "+rentalStatus+
+			    		"\tcost"+cost);
+			}
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+		}
 	}
 
+
+	
 	public int getEqID() {
 		return eqID;
 	}
