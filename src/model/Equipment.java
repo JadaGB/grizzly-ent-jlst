@@ -1,6 +1,5 @@
 package model;
 import java.sql.*;
-import controller.DBConnection;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -23,10 +22,6 @@ public class Equipment {
 	private ResultSet result = null;
 
 	
-	private PreparedStatement del;
-	private String query;
-	private Connection myConn;
-	
 	public Equipment() {
 
 		this.eqID = 0000;
@@ -34,15 +29,6 @@ public class Equipment {
 		this.eqType = "";
 		this.rentalStatus = "";
 		this.cost = 0;
-		
-		query="Delete equipment = ? WHERE id = ?";
-		myConn= DBConnection.getConnection();
-		try {
-			del=myConn.prepareStatement(query);
-		} catch (SQLException e) {
-		
-			e.printStackTrace();
-		}
 	}
 
 	public Equipment(int eqID, String eqName, String eqType, String rentalStatus, float cost) {
@@ -124,15 +110,24 @@ public class Equipment {
 		this.cost = cost;
 	}
 	
-	public void delete(String eqId) {
+	public void delete(String eqId, Connection myConn) {
+		String query="Delete request where id = ?";
+		
 		try {
+			PreparedStatement del = myConn.prepareStatement(query);
 			del.setString(1, eqId);
 			del.execute();
+			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NullPointerException np) {
+			System.out.println("Null Expectation.");
+			np.getStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 
 	@Override
 	public String toString() {
