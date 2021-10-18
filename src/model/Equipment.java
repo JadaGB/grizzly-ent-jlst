@@ -17,11 +17,13 @@ public class Equipment {
 	private String eqType;
 	private String rentalStatus;
 	private float cost;
+
 	private static Connection connection = null;
 	private Statement stmt = null;
 	private ResultSet result = null;
 
-	
+
+
 	public Equipment() {
 
 		this.eqID = 0000;
@@ -29,7 +31,7 @@ public class Equipment {
 		this.eqType = "";
 		this.rentalStatus = "";
 		this.cost = 0;
-		connection = DBConnection.getConnection();
+
 	}
 
 	public Equipment(int eqID, String eqName, String eqType, String rentalStatus, float cost) {
@@ -68,6 +70,7 @@ public class Equipment {
 			System.err.println("Error Selecting all" + e.getMessage());
 		}
 	}
+
 
 
 	
