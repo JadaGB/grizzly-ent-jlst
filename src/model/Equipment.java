@@ -72,7 +72,6 @@ public class Equipment {
 			while (result.next()) {
 				int eqId = result.getInt(eqID);
 				String eqName = result.getString("Name");
-				String eqType = result.getString("Type");
 				String rentalStatus= result.getString("rentalStatus");
 				float cost=Float.parseFloat(result.getString("cost"));			
 			    System.out.println("Equipment ID: "+eqID+"\t Equipment Name: "+eqName+"\t Result: "+rentalStatus+
