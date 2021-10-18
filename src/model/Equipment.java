@@ -49,6 +49,28 @@ public class Equipment {
 	}
 	
 	
+		public void create(Connection myConn, Equipment equipment) {
+			
+			eqID = equipment.getEqID();
+			eqName = equipment.getEqName();
+			eqType = equipment.getEqType();
+			rentalStatus = equipment.getRentalStatus();
+			cost = equipment.getCost();
+			try {
+				stmt = myConn.createStatement();
+				stmt.executeUpdate("INSERT INTO equipments(ID, Name, Type, Rental Status, Cost) values('"+eqID+"','"+eqName+"','"+eqType+"', '"+rentalStatus+"','"+cost+"')");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch(NullPointerException np) {
+				System.out.println("Null Expection.");
+				np.getStackTrace();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+
+	
 	public void readAll() {
 		String selectSql = "SELECT * FROM equipment";
 		
@@ -60,7 +82,7 @@ public class Equipment {
 				String eqName = result.getString("Name");
 				String rentalStatus= result.getString("rentalStatus");
 				float cost=Float.parseFloat(result.getString("cost"));			
-			    System.out.println("Equipment ID: "+eqID+"\t Equipment Name: "+eqName+"\t Result: "+rentalStatus+
+			    System.out.println("Equipment ID: "+eqId+"\t Equipment Name: "+eqName+"\t Result: "+rentalStatus+
 			    		"\tcost"+cost);
 			}
 		}catch(SQLException e) {
@@ -110,11 +132,11 @@ public class Equipment {
 		this.cost = cost;
 	}
 	
-	public void delete(String eqId, Connection myConn) {
+	public void delete(String eqId) {
 		String query="Delete request where id = ?";
 		
 		try {
-			PreparedStatement del = myConn.prepareStatement(query);
+			PreparedStatement del = connection.prepareStatement(query);
 			del.setString(1, eqId);
 			del.execute();
 			
