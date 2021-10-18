@@ -1,4 +1,6 @@
 package model;
+import java.sql.*;
+import controller.DBConnection;
 
 public class Equipment {
 
@@ -8,12 +10,25 @@ public class Equipment {
 	private String rentalStatus;
 	private float cost;
 	
+	private PreparedStatement del;
+	private String query;
+	private Connection myConn;
+	
 	public Equipment() {
 		this.eqID = 0000;
 		this.eqName = "";
 		this.eqType = "";
 		this.rentalStatus = "";
 		this.cost = 0;
+		
+		query="Delete equipment = ? WHERE id = ?";
+		myConn= DBConnection.getConnection();
+		try {
+			del=myConn.prepareStatement(query);
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
 	}
 
 	public Equipment(int eqID, String eqName, String eqType, String rentalStatus, float cost) {
@@ -69,6 +84,16 @@ public class Equipment {
 
 	public void setCost(float cost) {
 		this.cost = cost;
+	}
+	
+	public void delete(String eqId) {
+		try {
+			del.setString(1, eqId);
+			del.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

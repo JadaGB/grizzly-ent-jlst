@@ -1,5 +1,11 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import controller.DBConnection;
+
 public class Request {
 	
 	private int reqID;
@@ -9,6 +15,10 @@ public class Request {
 	private float quotation;
 	private boolean confirmed;
 	
+	private PreparedStatement del;
+	private String query;
+	private Connection myConn;
+	
 	public Request() {
 		this.reqID = 0000;
 		this.cName = new Customer();
@@ -17,6 +27,14 @@ public class Request {
 		this.quotation = 0;
 		this.confirmed = false;
 		
+		query="Delete request = ? WHERE id = ?";
+		myConn= DBConnection.getConnection();
+		try {
+			del=myConn.prepareStatement(query);
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
 	}
 
 	public Request(int reqID, Customer cName, Equipment eName, Date requestDate, float quotation, boolean confirmed) {
@@ -85,6 +103,15 @@ public class Request {
 		this.confirmed = confirmed;
 	}
 	
+	public void delete(String eqId) {
+		try {
+			del.setString(1, eqId);
+			del.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public String toString() {
