@@ -1,10 +1,15 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class Event {
 	
 	private int evID;
 	private String eventName;
-	
+	private static Connection connection = null;
+	private Statement stmt = null;
 	
 	public Event() {
 		this.evID = 0000;
@@ -36,6 +41,25 @@ public class Event {
 
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
+	}
+	
+	public void create(Event event) {
+		
+		evID = event.getEvID();
+		eventName = event.getEventName();
+		
+		try {
+			stmt = connection.createStatement();
+			stmt.executeUpdate("INSERT INTO Event(ID, Name) values('"+evID+"','"+eventName+"')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch(NullPointerException np) {
+			System.out.println("Null Expection.");
+			np.getStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override

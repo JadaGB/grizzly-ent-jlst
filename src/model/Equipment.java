@@ -6,10 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import controller.DBConnection;
-
-
-
 public class Equipment {
 
 	private int eqID;
@@ -52,26 +48,26 @@ public class Equipment {
 	}
 	
 	
-		public void create(Connection myConn, Equipment equipment) {
+	public void create(Equipment equipment) {
 			
-			eqID = equipment.getEqID();
-			eqName = equipment.getEqName();
-			eqType = equipment.getEqType();
-			rentalStatus = equipment.getRentalStatus();
-			cost = equipment.getCost();
-			try {
-				stmt = myConn.createStatement();
-				stmt.executeUpdate("INSERT INTO equipments(ID, Name, Type, Rental Status, Cost) values('"+eqID+"','"+eqName+"','"+eqType+"', '"+rentalStatus+"','"+cost+"')");
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch(NullPointerException np) {
-				System.out.println("Null Expection.");
-				np.getStackTrace();
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-			
+		eqID = equipment.getEqID();
+		eqName = equipment.getEqName();
+		eqType = equipment.getEqType();
+		rentalStatus = equipment.getRentalStatus();
+		cost = equipment.getCost();
+		try {
+			stmt = connection.createStatement();
+			stmt.executeUpdate("INSERT INTO equipments(ID, Name, Type, Rental Status, Cost) values('"+eqID+"','"+eqName+"','"+eqType+"', '"+rentalStatus+"','"+cost+"')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch(NullPointerException np) {
+			System.out.println("Null Expection.");
+			np.getStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
+			
+	}
 
 	
 	public void readAll() {
