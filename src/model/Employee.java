@@ -1,59 +1,39 @@
 package model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import controller.DBConnection;
 
 public class Employee {
 	private int empID;
 	private String Fname;
 	private String Lname;
-	private Equipment responsibility; //of Event Type
-	private String passsword;
+	private String responsibility; //of Event Type //changed to String
+	private String password;
+	
 	private static Connection connection = null;
 	private Statement stmt = null;
 	private ResultSet result = null;
-
+	
+	private Statement st;
 	
 	public Employee() {
 		this.empID = 0000;
 		this.Fname = "";
 		this.Lname = "";
-		this.responsibility = new Equipment();
-		this.passsword = "";
-		connection = DBConnection.getConnection();
-	}
-	
-	public void readAll() {
-		String selectSql = "SELECT * FROM employee";
-		
-		try {
-			stmt = connection.createStatement();
-			result = stmt.executeQuery(selectSql);
-			while (result.next()) {
-				int empID = result.getInt("empId");
-				String Fname = result.getString("FirstName");
-				String Lname= result.getString("LastName");
-				String responsibility=result.getString("Responsibility");			
-			   System.out.println("Employee ID: "+empID+"\t First Name: "+Fname+
-					   "\t Last Name: "+Lname+"\t Responsibility: "+responsibility);
-			   
-			}
-		}catch(SQLException e) {
-			System.err.println("Error Selecting all" + e.getMessage());
-		}
+		this.responsibility = "";
+		this.password = "";
 	}
 	
 	
-	public Employee(int empID, String Fname, String Lname, Equipment responsibility, String passsword) {
+	public Employee(int empID, String Fname, String Lname, String responsibility, String password) {
 		this.empID = empID;
 		this.Fname = Fname;
 		this.Lname = Fname;
 		this.responsibility = responsibility;
-		this.passsword = passsword;
+		this.password = password;
 	}
 
 
@@ -62,7 +42,7 @@ public class Employee {
 		this.Fname = obj.Fname;
 		this.Lname = obj.Lname;
 		this.responsibility = obj.responsibility;
-		this.passsword = obj.passsword;
+		this.password = obj.password;
 	}
 
 
@@ -96,31 +76,136 @@ public class Employee {
 	}
 
 
-	public Equipment getResponsibility() {
+	public String getResponsibility() {
 		return responsibility;
 	}
 
 
 	public void setResponsibility(Equipment responsibility) {
-		this.responsibility = responsibility;
+		this.responsibility = responsibility.getEqType();
 	}
 
 
-	public String getPasssword() {
-		return passsword;
+	public String getPassword() {
+		return password;
 	}
 
 
-	public void setPasssword(String passsword) {
-		this.passsword = passsword;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 
 	@Override
 	public String toString() {
 		return "Employee ID: " + empID + ", First Name: " + Fname + ", Last Name: " + Lname + ", Responsibility: "
-				+ responsibility + ", Passsword: " + passsword + "\n";
+				+ responsibility + ", Passsword: " + password + "\n";
 	}
 	
+	public void create(Connection myConn, Employee employee) {
+		
+		String FirstName = employee.getFname();
+		String LastName = employee.getLname();
+		String password = employee.getPassword();
+		String responsibility = employee.getResponsibility();
+		
+		try {
+			st = myConn.createStatement();
+			st.executeUpdate("INSERT INTO employee(FirstName, LastName, Password, Responsibility) values('"+FirstName+"','"+LastName+"','"+password+"','"+responsibility+"')");
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} catch(NullPointerException np) {
+			System.out.println("Null Expection.");
+			np.getStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void readAll() {
+		String selectSql = "SELECT * FROM employee";
+
+		try {
+			stmt = connection.createStatement();
+			result = stmt.executeQuery(selectSql);
+			while (result.next()) {
+				int empID = result.getInt("empId");
+				String Fname = result.getString("FirstName");
+				String Lname= result.getString("LastName");
+				String responsibility=result.getString("Responsibility");			
+			   System.out.println("Employee ID: "+empID+"\t First Name: "+Fname+
+					   "\t Last Name: "+Lname+"\t Responsibility: "+responsibility);
+
+			}
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+		}
+	}
+	
+	public void updatePersonalInfo(String fName, String lName, String responsibility, int empId, Connection myConn) {
+		String query = "update employee set FirstName = ?, LastName = ?, Responsibility = ? where empId = ?";
+		
+		try {
+			PreparedStatement ps = myConn.prepareStatement(query);
+			
+			ps.setString(1, fName);
+			ps.setString(2, lName);
+			ps.setString(1, responsibility);
+			ps.setInt(4, empId);
+			ps.execute();
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}catch(NullPointerException np) {
+			System.out.println("Null Expection.");
+			np.getStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updatePassword(String password, int empId, Connection myConn) {
+		String query = "update employee set Password = ? where empId = ?";
+		
+		try {
+			PreparedStatement ps = myConn.prepareStatement(query);
+			
+			ps.setString(1, password);
+			ps.setInt(2, empId);
+			ps.execute();
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}catch(NullPointerException np) {
+			System.out.println("Null Expection.");
+			np.getStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void delete(int empID, Connection myConn) {
+		String query = "delete from employee where empId = ?";
+		
+		try {
+			PreparedStatement ps = myConn.prepareStatement(query);
+			
+			
+			ps.setInt(1, empID);
+			ps.execute();
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}catch(NullPointerException np) {
+			System.out.println("Null Expection.");
+			np.getStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 }
