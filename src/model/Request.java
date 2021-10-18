@@ -6,10 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+<<<<<<< HEAD
 import controller.DBConnection;
+=======
+>>>>>>> branch 'main' of git@github.com:JadaGB/grizzly-ent-jlst.git
 
 public class Request {
 	
+<<<<<<< HEAD
 	private int reqID;
 	private Customer cName;
 	private Equipment eName;
@@ -20,6 +24,15 @@ public class Request {
 	private Statement stmt = null;
 	private ResultSet result = null;
 	
+=======
+	protected int reqID;
+	protected Customer cName;
+	protected Equipment eName;
+	protected Date requestDate;
+	protected float quotation;
+	protected boolean confirmed;
+	private Statement stmt = null;
+>>>>>>> branch 'main' of git@github.com:JadaGB/grizzly-ent-jlst.git
 	
 	public Request() {
 		this.reqID = 0000;
@@ -118,7 +131,27 @@ public class Request {
 	public void setConfirmed(boolean confirmed) {
 		this.confirmed = confirmed;
 	}
-	
+	public void create(Connection myConn, Request request) {
+		
+		reqID = request.getReqID();
+		cName = request.getcName();
+		eName = request.geteName();
+		requestDate = request.getRequestDate();
+		quotation = request.getQuotation();
+		confirmed = request.getConfirmed();
+		try {
+			stmt = myConn.createStatement();
+			stmt.executeUpdate("INSERT INTO Request(ID, Name, Customer Name, Equipment Name, Request Date, Quotation, Confirmation) values('"+reqID+"','"+cName+"','"+eName+"', '"+requestDate+"','"+quotation+"','"+confirmed+"')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch(NullPointerException np) {
+			System.out.println("Null Expection.");
+			np.getStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	public void delete(String reqId, Connection myConn) {
 		String query="Delete request where id = ?";
 		
