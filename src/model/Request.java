@@ -103,9 +103,9 @@ public class Request {
 		this.confirmed = confirmed;
 	}
 	
-	public void delete(String eqId) {
+	public void delete(String reqId) {
 		try {
-			del.setString(1, eqId);
+			del.setString(1, reqId);
 			del.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
