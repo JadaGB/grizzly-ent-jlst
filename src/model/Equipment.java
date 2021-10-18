@@ -57,7 +57,7 @@ public class Equipment {
 			stmt = connection.createStatement();
 			result = stmt.executeQuery(selectSql);
 			while (result.next()) {
-				int eqId = result.getInt(eqID);
+				int eqId = result.getInt("eqID");
 				String eqName = result.getString("Name");
 				String rentalStatus= result.getString("rentalStatus");
 				float cost=Float.parseFloat(result.getString("cost"));			

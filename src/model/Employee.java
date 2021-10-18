@@ -1,11 +1,22 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import controller.DBConnection;
+
 public class Employee {
 	private int empID;
 	private String Fname;
 	private String Lname;
 	private Equipment responsibility; //of Event Type
 	private String passsword;
+	private static Connection connection = null;
+	private Statement stmt = null;
+	private ResultSet result = null;
+
 	
 	public Employee() {
 		this.empID = 0000;
@@ -13,6 +24,27 @@ public class Employee {
 		this.Lname = "";
 		this.responsibility = new Equipment();
 		this.passsword = "";
+		connection = DBConnection.getConnection();
+	}
+	
+	public void readAll() {
+		String selectSql = "SELECT * FROM employee";
+		
+		try {
+			stmt = connection.createStatement();
+			result = stmt.executeQuery(selectSql);
+			while (result.next()) {
+				int empID = result.getInt("empId");
+				String Fname = result.getString("FirstName");
+				String Lname= result.getString("LastName");
+				String responsibility=result.getString("Responsibility");			
+			   System.out.println("Employee ID: "+empID+"\t First Name: "+Fname+
+					   "\t Last Name: "+Lname+"\t Responsibility: "+responsibility);
+			   
+			}
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+		}
 	}
 	
 	
