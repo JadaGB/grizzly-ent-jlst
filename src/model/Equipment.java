@@ -66,6 +66,9 @@ public class Equipment {
 			    System.out.println("Equipment ID: "+eqId+"\t Equipment Name: "+eqName+"\t Result: "+rentalStatus+
 			    		"\tcost"+cost);
 			}
+		//Might need this??	
+		Logger.info("Queried Equipment table for all records");
+		
 		}catch(NullPointerException e) {
 			System.err.println(e.getMessage());
 			Logger.error("Error: ",e.getMessage());
@@ -131,7 +134,7 @@ public class Equipment {
 			PreparedStatement del = myConn.prepareStatement(query);
 			del.setString(1, eqId);
 			del.execute();
-			Logger.info("Record deleted");
+			Logger.info("Equipment Record deleted");
 		
 		} catch (SQLException e) {
 			e.printStackTrace();

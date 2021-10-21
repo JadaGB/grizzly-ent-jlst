@@ -1,10 +1,14 @@
 package model;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Scheduled extends Request {
 	
 	private Date returnDate;
 	//private String invoice; //???
 
+	
 	
 	public Scheduled() {
 		super();

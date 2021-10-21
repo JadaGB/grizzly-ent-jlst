@@ -69,6 +69,7 @@ public class Customer {
 				result.getString("LastName")+"\tEmail: "+result.getString("Email")+
 				"\tPhoneNumber: "+result.getString("PhoneNumber"));
 			}
+			Logger.info("Queried Customer Table for all Records");
 		}catch(SQLException e) {
 			System.err.println("Error Selecting all" + e.getMessage());
 			Logger.error("Error: ",e.getMessage());
@@ -168,14 +169,19 @@ public class Customer {
 		try {
 			stmt= myConn.createStatement();
 			stmt.executeUpdate("INSERT INTO customer(Email, FirstName, LastName, Password, PhoneNumber) values('"+email+"','"+FirstName+"','"+LastName+"','"+password+"','"+phoneNum+"')");
+			
+			Logger.info("Record Created for Customer Table");
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		} catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
 		} catch(Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	
@@ -192,14 +198,18 @@ public class Customer {
 			ps.setInt(5, cid);
 			ps.execute();
 			
+			Logger.info("Customer's Personal Info Updated");
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
 		} catch(Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	
@@ -237,15 +247,17 @@ public class Customer {
 			
 			ps.setInt(1, cid);
 			ps.execute();
-			
+			Logger.info("Customer Record Deleted");
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
 		} catch(Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	

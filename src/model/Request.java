@@ -74,6 +74,9 @@ public class Request {
 					   "\t Employee Name: "+eName+"\t Quotation: "+quotation+"\tConfirmed: "+confirmed);
 			   
 			}
+			//Might need this??	
+			Logger.info("Queried Equipment table for all records");
+			
 		}catch(SQLException e) {
 			System.err.println("Error Selecting all" + e.getMessage());
 			Logger.error("Error: ",e.getMessage());
@@ -139,7 +142,7 @@ public class Request {
 			stmt.executeUpdate("INSERT INTO Request(ID, Name, Customer Name, Equipment Name, Request Date, Quotation, Confirmation) values('"+reqID+"','"+cName+"','"+eName+"', '"+requestDate+"','"+quotation+"','"+confirmed+"')");
 			
 			//Might be sensible
-			Logger.info("Request was created");
+			Logger.info("Request record created");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -162,7 +165,7 @@ public class Request {
 			del.setString(1, reqId);
 			del.execute();
 			//Might be sensible
-			Logger.info("Request was deleted");
+			Logger.info("Request record was deleted");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			Logger.error("Error: ", e.getMessage());
