@@ -69,8 +69,17 @@ public class Equipment {
 			    System.out.println("Equipment ID: "+eqId+"\t Equipment Name: "+eqName+"\t Result: "+rentalStatus+
 			    		"\tcost"+cost);
 			}
-		}catch(SQLException e) {
+		}catch(NullPointerException e) {
+			System.err.println(e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+		catch(SQLException e) {
 			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+		catch(Exception e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 
