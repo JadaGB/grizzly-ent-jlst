@@ -1,16 +1,39 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import controller.DBConnection;
+
 public class Event {
 	
 	private int evID;
 	private String eventName;
-	
+	private Statement stmt = null;
+	private ResultSet result = null;
 	
 	public Event() {
 		this.evID = 0000;
 		this.eventName = "";
 	}
 
+	
+	
+	public void readall() {
+		Connection con=DBConnection.getConnection();
+		try {
+			 stmt=con.createStatement();
+			 result=con.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
 	public Event(int evID, String eventName) {
 		
 		this.evID = evID;

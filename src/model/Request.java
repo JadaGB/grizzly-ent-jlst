@@ -6,14 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-<<<<<<< HEAD
 import controller.DBConnection;
-=======
->>>>>>> branch 'main' of git@github.com:JadaGB/grizzly-ent-jlst.git
+
+
 
 public class Request {
 	
-<<<<<<< HEAD
+
 	private int reqID;
 	private Customer cName;
 	private Equipment eName;
@@ -24,15 +23,7 @@ public class Request {
 	private Statement stmt = null;
 	private ResultSet result = null;
 	
-=======
-	protected int reqID;
-	protected Customer cName;
-	protected Equipment eName;
-	protected Date requestDate;
-	protected float quotation;
-	protected boolean confirmed;
-	private Statement stmt = null;
->>>>>>> branch 'main' of git@github.com:JadaGB/grizzly-ent-jlst.git
+
 	
 	public Request() {
 		this.reqID = 0000;
