@@ -13,6 +13,7 @@ public class Event {
 	private String eventName;
 	private Statement stmt = null;
 	private ResultSet result = null;
+	private static Connection connection = null;
 	
 	public Event() {
 		this.evID = 0000;
@@ -22,10 +23,18 @@ public class Event {
 	
 	
 	public void readall() {
-		Connection con=DBConnection.getConnection();
+		String selectSql = "SELECT * FROM event";
+		connection =DBConnection.getConnection();
 		try {
-			 stmt=con.createStatement();
-			 result=con.executeQuery();
+			 stmt=connection.createStatement();
+			 result=stmt.executeQuery(selectSql);
+			 
+			 while(result.next()) {
+				 System.out.println("\nEvent Id: "+result.getString("evID")+
+						 "\nEvent Name: "+result.getString("eventName"));
+			 }
+			 
+			 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

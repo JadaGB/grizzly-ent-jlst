@@ -2,6 +2,7 @@ package model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -15,7 +16,10 @@ public class Customer {
 	private String password;
 	private String evName;  
 	
-	private Statement st;
+	private static Connection connection = null;
+	private Statement stmt = null;
+	private ResultSet result = null;
+
 	
 	public Customer() {
 		this.cusID = 0000;
@@ -47,7 +51,44 @@ public class Customer {
 		this.evName = obj.evName;
 		
 	}
+	public void readAll() {
+		String selectSql = "SELECT * FROM customer";
+		
+		try {
+			stmt = connection.createStatement();
+			result = stmt.executeQuery(selectSql);
+			while (result.next()) {
+				/*int eqId = result.getInt("eqID");
+				String eqName = result.getString("Name");
+				String rentalStatus= result.getString("rentalStatus");
+				float cost=Float.parseFloat(result.getString("cost"));			
+			   */ System.out.println("Customer Name: "+result.getString("FirstName")+" "+
+				result.getString("LastName")+"\tEmail: "+result.getString("Email")+
+				"\tPhoneNumber: "+result.getString("PhoneNumber"));
+			}
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+		}
+	}
 
+	
+	/*public void getEvent() {
+		String selectSql ="SELECT * FROM (customer c inner join event e on c.cid = e.cid) ";
+		try {
+			stmt = connection.createStatement();
+			result = stmt.executeQuery(selectSql);
+			while (result.next()) {
+				int eqId = result.getInt("eqID");
+				String eqName = result.getString("Name");
+				String rentalStatus= result.getString("rentalStatus");
+				float cost=Float.parseFloat(result.getString("cost"));			
+			    System.out.println("Equipment ID: "+eqId+"\t Equipment Name: "+eqName+"\t Result: "+rentalStatus+
+			    		"\tcost"+cost);
+			}
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+		}
+	}*/
 	public int getCusID() {
 		return cusID;
 	}
@@ -121,8 +162,8 @@ public class Customer {
 		//String eventName = customer //Fix
 		
 		try {
-			st = myConn.createStatement();
-			st.executeUpdate("INSERT INTO customer(Email, FirstName, LastName, Password, PhoneNumber) values('"+email+"','"+FirstName+"','"+LastName+"','"+password+"','"+phoneNum+"')");
+			stmt= myConn.createStatement();
+			stmt.executeUpdate("INSERT INTO customer(Email, FirstName, LastName, Password, PhoneNumber) values('"+email+"','"+FirstName+"','"+LastName+"','"+password+"','"+phoneNum+"')");
 		} catch (SQLException e) {
 			
 			e.printStackTrace();

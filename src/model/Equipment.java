@@ -6,7 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import controller.DBConnection;
+
 
 
 
@@ -21,8 +25,7 @@ public class Equipment {
 	private static Connection connection = null;
 	private Statement stmt = null;
 	private ResultSet result = null;
-
-
+	private static final Logger Logger=LogManager.getLogger(Equipment.class);
 
 	public Equipment() {
 
@@ -72,7 +75,8 @@ public class Equipment {
 	}
 
 
-
+	//Todo method to search by type using SQL LIKE ??
+	//Rental Status
 	
 	public int getEqID() {
 		return eqID;
