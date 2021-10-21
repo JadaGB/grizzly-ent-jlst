@@ -226,6 +226,7 @@ public class Customer {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
