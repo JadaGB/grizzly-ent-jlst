@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Customer {
 	
 	private int cusID;
@@ -19,6 +22,7 @@ public class Customer {
 	private static Connection connection = null;
 	private Statement stmt = null;
 	private ResultSet result = null;
+	private static final Logger Logger=LogManager.getLogger(Customer.class);
 
 	
 	public Customer() {
@@ -68,6 +72,7 @@ public class Customer {
 			}
 		}catch(SQLException e) {
 			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 
@@ -87,6 +92,7 @@ public class Customer {
 			}
 		}catch(SQLException e) {
 			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
 		}
 	}*/
 	public int getCusID() {
@@ -164,14 +170,19 @@ public class Customer {
 		try {
 			stmt= myConn.createStatement();
 			stmt.executeUpdate("INSERT INTO customer(Email, FirstName, LastName, Password, PhoneNumber) values('"+email+"','"+FirstName+"','"+LastName+"','"+password+"','"+phoneNum+"')");
-		} catch (SQLException e) {
+		} catch (SQLException e)
+		{
 			
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		} catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
+			
 		} catch(Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	
@@ -191,11 +202,14 @@ public class Customer {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
 		} catch(Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	
@@ -215,8 +229,10 @@ public class Customer {
 		}catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
 		} catch(Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	
@@ -233,11 +249,14 @@ public class Customer {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
 		} catch(Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	

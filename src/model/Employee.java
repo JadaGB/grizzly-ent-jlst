@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Employee {
 	private int empID;
 	private String Fname;
@@ -16,7 +19,7 @@ public class Employee {
 	private static Connection connection = null;
 	private Statement stmt = null;
 	private ResultSet result = null;
-	
+	private static final Logger Logger=LogManager.getLogger(Employee.class);
 	private Statement st;
 	
 	public Employee() {
@@ -115,11 +118,14 @@ public class Employee {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		} catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
 		} catch(Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	
@@ -140,6 +146,7 @@ public class Employee {
 			}
 		}catch(SQLException e) {
 			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	
@@ -158,11 +165,14 @@ public class Employee {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
 		} catch(Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	
@@ -179,11 +189,14 @@ public class Employee {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
 		} catch(Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	
@@ -200,11 +213,14 @@ public class Employee {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
 		} catch(Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	
