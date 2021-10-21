@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import controller.DBConnection;
 
 
@@ -23,7 +26,7 @@ public class Request {
 	private Statement stmt = null;
 	private ResultSet result = null;
 	
-
+	private static final Logger Logger=LogManager.getLogger(Request.class);
 	
 	public Request() {
 		this.reqID = 0000;
@@ -73,6 +76,7 @@ public class Request {
 			}
 		}catch(SQLException e) {
 			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	public int getReqID() {
@@ -133,13 +137,20 @@ public class Request {
 		try {
 			stmt = myConn.createStatement();
 			stmt.executeUpdate("INSERT INTO Request(ID, Name, Customer Name, Equipment Name, Request Date, Quotation, Confirmation) values('"+reqID+"','"+cName+"','"+eName+"', '"+requestDate+"','"+quotation+"','"+confirmed+"')");
+			
+			//Might be sensible
+			Logger.info("Request was created");
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		} catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
 		} catch(Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 		
 	}
@@ -150,14 +161,18 @@ public class Request {
 			PreparedStatement del = myConn.prepareStatement(query);
 			del.setString(1, reqId);
 			del.execute();
-			
+			//Might be sensible
+			Logger.info("Request was deleted");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			Logger.error("Error: ", e.getMessage());
 		} catch (NullPointerException np) {
 			System.out.println("Null Expectation.");
 			np.getStackTrace();
+			Logger.error("Error: ", np.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ", e.getMessage());
 		}
 	}
 

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Customer {
 	
@@ -20,6 +22,7 @@ public class Customer {
 	private Statement stmt = null;
 	private ResultSet result = null;
 
+	private static final Logger Logger=LogManager.getLogger(Customer.class);
 	
 	public Customer() {
 		this.cusID = 0000;
@@ -68,6 +71,7 @@ public class Customer {
 			}
 		}catch(SQLException e) {
 			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 
@@ -208,15 +212,19 @@ public class Customer {
 			ps.setString(1, password);
 			ps.setInt(2, cid);
 			ps.execute();
-			
+			Logger.info("Customer Password Updated");
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}catch(NullPointerException np) {
 			System.out.println("Null Expection.");
 			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
+			
 		} catch(Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 	

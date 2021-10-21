@@ -134,14 +134,18 @@ public class Equipment {
 			PreparedStatement del = myConn.prepareStatement(query);
 			del.setString(1, eqId);
 			del.execute();
-			
+			Logger.info("Record deleted");
+		
 		} catch (SQLException e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		} catch (NullPointerException np) {
 			System.out.println("Null Expectation.");
+			Logger.error("Error: ",np.getMessage());
 			np.getStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
 		}
 	}
 
