@@ -22,25 +22,7 @@ public class Event {
 
 	
 	
-	public void readall() {
-		String selectSql = "SELECT * FROM event";
-		connection =DBConnection.getConnection();
-		try {
-			 stmt=connection.createStatement();
-			 result=stmt.executeQuery(selectSql);
-			 
-			 while(result.next()) {
-				 System.out.println("\nEvent Id: "+result.getString("evID")+
-						 "\nEvent Name: "+result.getString("eventName"));
-			 }
-			 
-			 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+
 	
 	
 	public Event(int evID, String eventName) {
@@ -73,6 +55,44 @@ public class Event {
 	@Override
 	public String toString() {
 		return "Event ID: " + evID + ", Event Name: " + eventName + "\n";
+	}
+	
+public void create(Event event) {
+		
+		evID = event.getEvID();
+		eventName = event.getEventName();
+		
+		try {
+			stmt = connection.createStatement();
+			stmt.executeUpdate("INSERT INTO Event(ID, Name) values('"+evID+"','"+eventName+"')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch(NullPointerException np) {
+			System.out.println("Null Expection.");
+			np.getStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void readall() {
+		String selectSql = "SELECT * FROM event";
+		connection =DBConnection.getConnection();
+		try {
+			 stmt=connection.createStatement();
+			 result=stmt.executeQuery(selectSql);
+			 
+			 while(result.next()) {
+				 System.out.println("\nEvent Id: "+result.getString("evID")+
+						 "\nEvent Name: "+result.getString("eventName"));
+			 }
+			 
+			 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	

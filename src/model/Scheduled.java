@@ -1,5 +1,9 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -7,6 +11,8 @@ public class Scheduled extends Request {
 	
 	private Date returnDate;
 	//private String invoice; //???
+	private static Connection connection = null;
+	private Statement stmt = null;	
 
 	
 	
@@ -47,6 +53,29 @@ public class Scheduled extends Request {
 		return "Scheduled Request: \n " +super.toString() + " Return Date: " + returnDate +"\n";
 	}
 	
+	
+public void create(Scheduled scheduled) {
+		
+		returnDate = scheduled.getReturnDate();
+		int reqID = scheduled.getReqID();
+		Customer cName = Request.getcName();
+		Equipment eName = scheduled.geteName();
+		Date requestDate = scheduled.getRequestDate();
+		float quotation = Request.getQuotation();
+		boolean confirmed = Request.getConfirmed();
+		try {
+			stmt = connection.createStatement();
+			stmt.executeUpdate("INSERT INTO Request(ID, Name, Customer Name, Equipment Name, Request Date, Quotation, Confirmation) values('"+reqID+"','"+cName+"','"+eName+"', '"+requestDate+"','"+quotation+"','"+confirmed+"')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch(NullPointerException np) {
+			System.out.println("Null Expection.");
+			np.getStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 	
 	

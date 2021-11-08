@@ -22,7 +22,7 @@ public class Equipment {
 	private static Connection connection = null;
 	private Statement stmt = null;
 	private ResultSet result = null;
-	private static final Logger Logger=LogManager.getLogger(Equipment.class);
+	private static final Logger Logger= LogManager.getLogger(Equipment.class);
 
 	public Equipment() {
 
@@ -51,7 +51,27 @@ public class Equipment {
 	
 	}
 	
-	
+
+	public void create(Equipment equipment) {
+			
+		eqID = equipment.getEqID();
+		eqName = equipment.getEqName();
+		eqType = equipment.getEqType();
+		rentalStatus = equipment.getRentalStatus();
+		cost = equipment.getCost();
+		try {
+			stmt = connection.createStatement();
+			stmt.executeUpdate("INSERT INTO equipments(ID, Name, Type, Rental Status, Cost) values('"+eqID+"','"+eqName+"','"+eqType+"', '"+rentalStatus+"','"+cost+"')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch(NullPointerException np) {
+			System.out.println("Null Expection.");
+			np.getStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+			
+	}
 	public void readAll() {
 		String selectSql = "SELECT * FROM equipment";
 		

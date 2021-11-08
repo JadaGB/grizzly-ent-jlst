@@ -17,11 +17,11 @@ public class Request {
 	
 
 	private int reqID;
-	private Customer cName;
+	private static Customer cName;
 	private Equipment eName;
 	private Date requestDate;
-	private float quotation;
-	private boolean confirmed;
+	private static float quotation;
+	private static boolean confirmed;
 	private static Connection connection = null;
 	private Statement stmt = null;
 	private ResultSet result = null;
@@ -90,7 +90,7 @@ public class Request {
 		this.reqID = reqID;
 	}
 
-	public Customer getcName() {
+	public static Customer getcName() {
 		return cName;
 	}
 
@@ -114,7 +114,7 @@ public class Request {
 		this.requestDate = requestDate;
 	}
 
-	public float getQuotation() {
+	public static float getQuotation() {
 		return quotation;
 	}
 
@@ -122,7 +122,7 @@ public class Request {
 		this.quotation = quotation;
 	}
 	
-	public boolean getConfirmed() {
+	public static boolean getConfirmed() {
 		return confirmed;
 	}
 
