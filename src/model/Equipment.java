@@ -1,11 +1,6 @@
 package model;
 import java.sql.*;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +10,7 @@ public class Equipment {
 
 	private int eqID;
 	private String eqName;
-	private String eqType;
+	private int eqTypeID;
 	private String rentalStatus;
 	private float cost;
 
@@ -28,23 +23,23 @@ public class Equipment {
 
 		this.eqID = 0000;
 		this.eqName = "";
-		this.eqType = "";
+		this.eqTypeID = 00;
 		this.rentalStatus = "";
 		this.cost = 0;
 
 	}
 
-	public Equipment(int eqID, String eqName, String eqType, String rentalStatus, float cost) {
-		this.eqID = eqID;
+	public Equipment(String eqName, int eqTypeID, String rentalStatus, float cost) {
+		//this.eqID = eqID;
 		this.eqName = eqName;
-		this.eqType = eqType;
+		this.eqTypeID = eqTypeID;
 		this.rentalStatus = rentalStatus;
 		this.cost = cost;
 	}
 	public Equipment(Equipment obj) {
-		this.eqID = obj.eqID;
+		//this.eqID = obj.eqID;
 		this.eqName = obj.eqName;
-		this.eqType = obj.eqType;
+		this.eqTypeID = obj.eqTypeID;
 		this.rentalStatus = obj.rentalStatus;
 		this.cost = obj.cost;
 		
@@ -52,56 +47,7 @@ public class Equipment {
 	}
 	
 
-	public void create(Equipment equipment) {
-			
-		eqID = equipment.getEqID();
-		eqName = equipment.getEqName();
-		eqType = equipment.getEqType();
-		rentalStatus = equipment.getRentalStatus();
-		cost = equipment.getCost();
-		try {
-			stmt = connection.createStatement();
-			stmt.executeUpdate("INSERT INTO equipments(ID, Name, Type, Rental Status, Cost) values('"+eqID+"','"+eqName+"','"+eqType+"', '"+rentalStatus+"','"+cost+"')");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch(NullPointerException np) {
-			System.out.println("Null Expection.");
-			np.getStackTrace();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-			
-	}
-	public void readAll() {
-		String selectSql = "SELECT * FROM equipment";
-		
-		try {
-			stmt = connection.createStatement();
-			result = stmt.executeQuery(selectSql);
-			while (result.next()) {
-				int eqId = result.getInt("eqID");
-				String eqName = result.getString("Name");
-				String rentalStatus= result.getString("rentalStatus");
-				float cost=Float.parseFloat(result.getString("cost"));			
-			    System.out.println("Equipment ID: "+eqId+"\t Equipment Name: "+eqName+"\t Result: "+rentalStatus+
-			    		"\tcost"+cost);
-			}
-		//Might need this??	
-		Logger.info("Queried Equipment table for all records");
-		
-		}catch(NullPointerException e) {
-			System.err.println(e.getMessage());
-			Logger.error("Error: ",e.getMessage());
-		}
-		catch(SQLException e) {
-			System.err.println("Error Selecting all" + e.getMessage());
-			Logger.error("Error: ",e.getMessage());
-		}
-		catch(Exception e) {
-			System.err.println("Error Selecting all" + e.getMessage());
-			Logger.error("Error: ",e.getMessage());
-		}
-	}
+	
 
 
 	//Todo method to search by type using SQL LIKE ??
@@ -111,8 +57,24 @@ public class Equipment {
 		return eqID;
 	}
 
-	public void setEqID(int eqID) {
-		this.eqID = eqID;
+	public void setEqID(Connection myConn) {
+		String selectSql = "SELECT last_insert_id() as last_id from equipment";
+		
+		try {
+			stmt = myConn.createStatement();
+			result = stmt.executeQuery(selectSql);
+			while (result.next()) {
+				eqID = result.getInt("last_id");
+						
+			   //System.out.println("ID: "+ eqID);
+				
+			}
+			Logger.info("Queried Equipment Table for unique ID");
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+		
 	}
 
 	public String getEqName() {
@@ -123,12 +85,12 @@ public class Equipment {
 		this.eqName = eqName;
 	}
 
-	public String getEqType() {
-		return eqType;
+	public int getEqTypeID() {
+		return eqTypeID;
 	}
 
-	public void setEqType(String eqType) {
-		this.eqType = eqType;
+	public void setEqType(int eqTypeID) {
+		this.eqTypeID = eqTypeID;
 	}
 
 	public String getRentalStatus() {
@@ -147,8 +109,61 @@ public class Equipment {
 		this.cost = cost;
 	}
 	
+	public void create(Equipment equipment, Connection myConn) {
+		
+		//eqID = equipment.getEqID();
+		eqName = equipment.getEqName();
+		eqTypeID = equipment.getEqTypeID();
+		rentalStatus = equipment.getRentalStatus();
+		cost = equipment.getCost();
+		try {
+			stmt = myConn.createStatement();
+			stmt.executeUpdate("INSERT INTO equipment(Name, TypeID, rentalStatus, cost) values('"+eqName+"','"+eqTypeID+"', '"+rentalStatus+"','"+cost+"')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch(NullPointerException np) {
+			System.out.println("Null Expection.");
+			np.getStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+			
+	}
+	
+	public void readAll(Connection myConn) {
+		String selectSql = "SELECT * FROM equipment";
+		
+		try {
+			stmt = myConn.createStatement();
+			result = stmt.executeQuery(selectSql);
+			while (result.next()) {
+				int eqId = result.getInt("eqID");
+				String eqName = result.getString("Name");
+				//Get Type for id and display type namee
+				String rentalStatus= result.getString("rentalStatus");
+				float cost=Float.parseFloat(result.getString("cost"));			
+			    System.out.println("Equipment ID: "+eqId+"\t Equipment Name: "+eqName+"\t Rental Status: "+rentalStatus+
+			    		"\tcost"+cost);
+			}
+		//Might need this??	
+		Logger.info("Queried Equipment table for all records");
+		
+		}catch(NullPointerException e) {
+			System.err.println(e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+		catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+		catch(Exception e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+	}
+	
 	public void delete(String eqId, Connection myConn) {
-		String query="Delete request where id = ?";
+		String query="Delete from equipment where eqID = ?";
 		
 		try {
 			PreparedStatement del = myConn.prepareStatement(query);
@@ -169,10 +184,37 @@ public class Equipment {
 		}
 	}
 
+	public void updateEquipmentInfo(int eqID, String eqName, int eqTypeID, String rentalStatus, float cost, Connection myConn) {
+		String query = "update equipment set Name = ?, TypeID = ?, rentalStatus = ?, cost = ? where eqID = ?";
+		
+		try {
+			PreparedStatement ps = myConn.prepareStatement(query);
+			
+			ps.setString(1, eqName);
+			ps.setInt(2, eqTypeID);
+			ps.setString(3, rentalStatus);
+			ps.setFloat(4, cost);
+			ps.setInt(5, eqID);
+			ps.execute();
+			
+			Logger.info("Equipment Info Updated");
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
+		}catch(NullPointerException np) {
+			System.out.println("Null Expection.");
+			np.getStackTrace();
+			Logger.error("Error: ",np.getMessage());
+		} catch(Exception e) {
+			e.printStackTrace();
+			Logger.error("Error: ",e.getMessage());
+		}
+	}
 
 	@Override
 	public String toString() {
-		return "Equipment ID: " + eqID + ", Equipment Name: " + eqName + ", Equipment Type: " + eqType + ", Rental Status: "
+		return "Equipment ID: " + eqID + ", Equipment Name: " + eqName + ", Equipment Type: " + eqTypeID + ", Rental Status: "
 				+ rentalStatus + ", Cost:" + cost + "\n";
 	}
 	

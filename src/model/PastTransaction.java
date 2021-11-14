@@ -1,5 +1,8 @@
 package model;
 
+import java.sql.Connection;
+import java.time.LocalDate;
+
 public class PastTransaction extends Request{
 	
 	private boolean completed;
@@ -9,8 +12,10 @@ public class PastTransaction extends Request{
 		this.completed = false;
 	}
 
-	public PastTransaction(int reqID, Customer cName, Equipment eName, Date requestDate, float quotation, boolean confirmed, boolean completed) {
-		super(reqID, cName, eName, requestDate, quotation, confirmed);
+	public PastTransaction(int reqID, int cusID, int eid, Date requestDate, float quotation, boolean confirmed, boolean completed) {
+		super( cusID,  eid, requestDate);
+		quotation = super.getQuotation();
+		confirmed = super.getConfirmed();
 		this.completed = completed;
 	}
 	
@@ -27,6 +32,27 @@ public class PastTransaction extends Request{
 		this.completed = completed;
 	}
 
+	
+	public void create(PastTransaction pasttrans, Connection myConn) {
+	//	//if(assertThat(((ChronoLocalDate) requestDate).isAfter(LocalDate.now()), is(true)))
+	//	
+	//	//Date d = new Date();
+	//	//LocalDate.now();
+	//	
+		Date requestDate = pasttrans.getRequestDate();
+		
+		int rd = requestDate.getDay();
+		int rm = requestDate.getMonth();
+		int ry = requestDate.getYear();
+		LocalDate reqD = LocalDate.of(ry, rm, rd);
+		
+		//reqD = (LocalDate)requestDate;
+		if(reqD.isBefore(LocalDate.now())){
+			
+		}
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "PastTransaction \n Request Information: \n" + super.toString()

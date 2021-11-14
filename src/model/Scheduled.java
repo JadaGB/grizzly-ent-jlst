@@ -3,6 +3,9 @@ package model;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+//import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,9 +25,11 @@ public class Scheduled extends Request {
 		//this.invoice = "";
 	}
 	
-	public Scheduled(int reqID, Customer cName, Equipment eName, Date requestDate, float quotation, boolean confirmed, Date returnDate) 
+	public Scheduled(int reqID, int cusID, int eid, Date requestDate, float quotation, boolean confirmed, Date returnDate) 
 	{
-		super(reqID, cName, eName, requestDate, quotation, confirmed);
+		super( cusID,  eid, requestDate);
+		quotation = super.getQuotation();
+		confirmed = super.getConfirmed();
 		this.returnDate = returnDate;
 		//this.invoice = invoice;
 	}
@@ -54,26 +59,31 @@ public class Scheduled extends Request {
 	}
 	
 	
-public void create(Scheduled scheduled) {
+	public void create(Scheduled scheduled, Connection myConn) {
 		
 		returnDate = scheduled.getReturnDate();
 		int reqID = scheduled.getReqID();
-		Customer cName = Request.getcName();
-		Equipment eName = scheduled.geteName();
+		int cusID = Request.getCusID();
+		int eid = scheduled.getEid();
 		Date requestDate = scheduled.getRequestDate();
 		float quotation = Request.getQuotation();
 		boolean confirmed = Request.getConfirmed();
-		try {
-			stmt = connection.createStatement();
-			stmt.executeUpdate("INSERT INTO Request(ID, Name, Customer Name, Equipment Name, Request Date, Quotation, Confirmation) values('"+reqID+"','"+cName+"','"+eName+"', '"+requestDate+"','"+quotation+"','"+confirmed+"')");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch(NullPointerException np) {
-			System.out.println("Null Expection.");
-			np.getStackTrace();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+
+	
+		
+			try {
+				stmt = myConn.createStatement();
+				stmt.executeUpdate("INSERT INTO Request(ID, Name, Customer Name, Equipment Name, Request Date, Quotation, Confirmation) values('"+reqID+"','"+cusID+"','"+eid+"', '"+requestDate+"','"+quotation+"','"+confirmed+"')");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch(NullPointerException np) {
+				System.out.println("Null Expection.");
+				np.getStackTrace();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		
+		
 		
 	}
 	
