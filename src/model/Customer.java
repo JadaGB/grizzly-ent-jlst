@@ -16,7 +16,8 @@ public class Customer {
 	private String email;
 	private String phoneNum;
 	private String password;
-	private String evName;  
+	//private String evName;  
+	private int evID;
 	
 	private static Connection connection = null;
 	private Statement stmt = null;
@@ -25,23 +26,23 @@ public class Customer {
 	private static final Logger Logger=LogManager.getLogger(Customer.class);
 	
 	public Customer() {
-		this.cusID = 0000;
+		//this.cusID = 0000;
 		this.Fname = "John";
 		this.LName = "Doe";
 		this.email = "example@gmail.com";
 		this.phoneNum = "000-0000";
 		this.password = "";
-		this.evName = "";
+		this.evID = 000;
 	}
 
-	public Customer(int cusID, String Fname, String LName, String email, String phoneNum, String password, String evName) {
-		this.cusID = cusID;
+	public Customer(String Fname, String LName, String email, String phoneNum, String password) {
+		//this.cusID = cusID;
 		this.Fname = Fname;
 		this.LName = LName;
 		this.email = email;
 		this.phoneNum = phoneNum;
 		this.password = password;
-		this.evName = evName;
+		//this.evID = evID;
 	}
 	
 	public Customer(Customer obj) {
@@ -51,55 +52,42 @@ public class Customer {
 		this.email = obj.email;
 		this.phoneNum = obj.phoneNum;
 		this.password = obj.password;
-		this.evName = obj.evName;
+		this.evID = obj.evID;
 		
 	}
-	public void readAll() {
-		String selectSql = "SELECT * FROM customer";
+	
+	
+	public int getCusID() {
+		
+		
+		
+		//Example
+//		rs = st.executeQuery("select last_insert_id() as last_id from schedule");
+//		lastid = rs.getString("last_id");
+		
+		return cusID;
+	}
+
+	public void setCusID(Connection myConn) {
+		
+		String selectSql = "SELECT last_insert_id() as last_id from customer";
 		
 		try {
-			stmt = connection.createStatement();
+			stmt = myConn.createStatement();
 			result = stmt.executeQuery(selectSql);
 			while (result.next()) {
-				/*int eqId = result.getInt("eqID");
-				String eqName = result.getString("Name");
-				String rentalStatus= result.getString("rentalStatus");
-				float cost=Float.parseFloat(result.getString("cost"));			
-			   */ System.out.println("Customer Name: "+result.getString("FirstName")+" "+
-				result.getString("LastName")+"\tEmail: "+result.getString("Email")+
-				"\tPhoneNumber: "+result.getString("PhoneNumber"));
+				cusID = result.getInt("last_id");
+						
+			   System.out.println("ID: "+ cusID);
+				
 			}
-			Logger.info("Queried Customer Table for all Records");
+			Logger.info("Queried Customer Table for unique ID");
 		}catch(SQLException e) {
 			System.err.println("Error Selecting all" + e.getMessage());
 			Logger.error("Error: ",e.getMessage());
 		}
-	}
-
-	
-	/*public void getEvent() {
-		String selectSql ="SELECT * FROM (customer c inner join event e on c.cid = e.cid) ";
-		try {
-			stmt = connection.createStatement();
-			result = stmt.executeQuery(selectSql);
-			while (result.next()) {
-				int eqId = result.getInt("eqID");
-				String eqName = result.getString("Name");
-				String rentalStatus= result.getString("rentalStatus");
-				float cost=Float.parseFloat(result.getString("cost"));			
-			    System.out.println("Equipment ID: "+eqId+"\t Equipment Name: "+eqName+"\t Result: "+rentalStatus+
-			    		"\tcost"+cost);
-			}
-		}catch(SQLException e) {
-			System.err.println("Error Selecting all" + e.getMessage());
-		}
-	}*/
-	public int getCusID() {
-		return cusID;
-	}
-
-	public void setCusID(int cusID) {
-		this.cusID = cusID;
+		
+		//this.cusID = cusID;
 	}
 
 	public String getFname() {
@@ -142,18 +130,18 @@ public class Customer {
 		this.password = password;
 	}
 
-	public String getEvName() {
-		return evName;
+	public int getEvID() {
+		return evID;
 	}
 
-	public void setEvName(Event evName) {
-		this.evName = evName.getEventName();
+	public void setEvID(int evID) {
+		this.evID = evID;
 	}
 
 	@Override
 	public String toString() {
 		return "Customer ID: : " + cusID + ", First Name: " + Fname + ", Last Name: " + LName + ", Email: " + email + ", Phone Number:"
-				+ phoneNum + ", Password: " + password + ", Event Name: " + evName + "\n";
+				+ phoneNum + ", Password: " + password + ", Event ID: " + evID + "\n";
 	}
 
 	
@@ -165,6 +153,7 @@ public class Customer {
 		String password = customer.getPassword();
 		String email = customer.getEmail();
 		//String eventName = customer //Fix
+		//int eid = customer.getEvID();
 		
 		try {
 			stmt= myConn.createStatement();
@@ -261,5 +250,44 @@ public class Customer {
 		}
 	}
 	
+	public void readAll(Connection myConn) {
+		String selectSql = "SELECT * FROM customer";
+		
+		try {
+			stmt = myConn.createStatement();
+			result = stmt.executeQuery(selectSql);
+			while (result.next()) {
+						
+			    System.out.println("Customer Id: "+result.getInt("cid")+" "+"Customer Name: "+result.getString("FirstName")+" "+
+				result.getString("LastName")+"\tEmail: "+result.getString("Email")+
+				"\tPhoneNumber: "+result.getString("PhoneNumber"));
+			}
+			Logger.info("Queried Customer Table for all Records");
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+	}
+	
+
+	
+	/*public void getEvent() {
+	String selectSql ="SELECT * FROM (customer c inner join event e on c.cid = e.cid) ";
+	try {
+		stmt = connection.createStatement();
+		result = stmt.executeQuery(selectSql);
+		while (result.next()) {
+			int eqId = result.getInt("eqID");
+			String eqName = result.getString("Name");
+			String rentalStatus= result.getString("rentalStatus");
+			float cost=Float.parseFloat(result.getString("cost"));			
+		    System.out.println("Equipment ID: "+eqId+"\t Equipment Name: "+eqName+"\t Result: "+rentalStatus+
+		    		"\tcost"+cost);
+		}
+	}catch(SQLException e) {
+		System.err.println("Error Selecting all" + e.getMessage());
+	}
+}*/
+
 
 }
