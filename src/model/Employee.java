@@ -13,7 +13,7 @@ public class Employee {
 	private int empID;
 	private String Fname;
 	private String Lname;
-	private String responsibility; //of Event Type //changed to String
+	private int eqTypeID; //of Event Type //changed to String
 	private String password;
 	
 	private static Connection connection = null;
@@ -26,16 +26,16 @@ public class Employee {
 		this.empID = 0000;
 		this.Fname = "";
 		this.Lname = "";
-		this.responsibility = "";
+		this.eqTypeID = 00;
 		this.password = "";
 	}
 	
 	
-	public Employee(int empID, String Fname, String Lname, String responsibility, String password) {
-		this.empID = empID;
+	public Employee(String Fname, String Lname, int eqTypeID, String password) {
+		//this.empID = empID;
 		this.Fname = Fname;
-		this.Lname = Fname;
-		this.responsibility = responsibility;
+		this.Lname = Lname;
+		this.eqTypeID = eqTypeID;
 		this.password = password;
 	}
 
@@ -44,7 +44,7 @@ public class Employee {
 		this.empID = obj.empID;
 		this.Fname = obj.Fname;
 		this.Lname = obj.Lname;
-		this.responsibility = obj.responsibility;
+		this.eqTypeID = obj.eqTypeID;
 		this.password = obj.password;
 	}
 
@@ -54,8 +54,23 @@ public class Employee {
 	}
 
 
-	public void setEmpID(int empID) {
-		this.empID = empID;
+	public void setEmpID(Connection myConn) {
+		String selectSql = "SELECT last_insert_id() as last_id from employee";
+		
+		try {
+			stmt = myConn.createStatement();
+			result = stmt.executeQuery(selectSql);
+			while (result.next()) {
+				empID = result.getInt("last_id");
+						
+			   //System.out.println("ID: "+ eqID);
+				
+			}
+			Logger.info("Queried Equipment Table for unique ID");
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
 	}
 
 
@@ -79,13 +94,13 @@ public class Employee {
 	}
 
 
-	public String getResponsibility() {
-		return responsibility;
+	public int getEqTypeID() {
+		return eqTypeID;
 	}
 
 
-	public void setResponsibility(Equipment responsibility) {
-		this.responsibility = responsibility.getEqType();
+	public void setEqTypeID(int eqTypeID) {
+		this.eqTypeID = eqTypeID;
 	}
 
 
@@ -101,8 +116,8 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return "Employee ID: " + empID + ", First Name: " + Fname + ", Last Name: " + Lname + ", Responsibility: "
-				+ responsibility + ", Passsword: " + password + "\n";
+		return "Employee ID: " + empID + ", First Name: " + Fname + ", Last Name: " + Lname + ", Equip Type ID: "
+				+ eqTypeID + ", Passsword: " + password + "\n";
 	}
 	
 	public void create(Connection myConn, Employee employee) {
@@ -110,11 +125,11 @@ public class Employee {
 		String FirstName = employee.getFname();
 		String LastName = employee.getLname();
 		String password = employee.getPassword();
-		String responsibility = employee.getResponsibility();
+		int eqTypeID = employee.getEqTypeID();
 		
 		try {
 			st = myConn.createStatement();
-			st.executeUpdate("INSERT INTO employee(FirstName, LastName, Password, Responsibility) values('"+FirstName+"','"+LastName+"','"+password+"','"+responsibility+"')");
+			st.executeUpdate("INSERT INTO employee(FirstName, LastName, Password, eTypeID) values('"+FirstName+"','"+LastName+"','"+password+"','"+eqTypeID+"')");
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
@@ -139,9 +154,9 @@ public class Employee {
 				int empID = result.getInt("empId");
 				String Fname = result.getString("FirstName");
 				String Lname= result.getString("LastName");
-				String responsibility=result.getString("Responsibility");			
+				int eqTypeID=result.getInt("eTypeID");			
 			   System.out.println("Employee ID: "+empID+"\t First Name: "+Fname+
-					   "\t Last Name: "+Lname+"\t Responsibility: "+responsibility);
+					   "\t Last Name: "+Lname+"\t Eq Type ID: "+eqTypeID);
 
 			}
 		}catch(SQLException e) {
@@ -150,15 +165,15 @@ public class Employee {
 		}
 	}
 	
-	public void updatePersonalInfo(String fName, String lName, String responsibility, int empId, Connection myConn) {
-		String query = "update employee set FirstName = ?, LastName = ?, Responsibility = ? where empId = ?";
+	public void updatePersonalInfo(String fName, String lName, int eqTypeID, int empId, Connection myConn) {
+		String query = "update employee set FirstName = ?, LastName = ?, eTypeID = ? where empId = ?";
 		
 		try {
 			PreparedStatement ps = myConn.prepareStatement(query);
 			
 			ps.setString(1, fName);
 			ps.setString(2, lName);
-			ps.setString(1, responsibility);
+			ps.setInt(3, eqTypeID);
 			ps.setInt(4, empId);
 			ps.execute();
 			
