@@ -15,7 +15,7 @@ import controller.SystemController;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Home extends JPanel {
+public class EmpHome extends JPanel {
 	
 	private NewRequestForm newReq;
 	
@@ -24,7 +24,7 @@ public class Home extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Home(SystemController c) {
+	public EmpHome(SystemController c) {
 		
 		controller = c;
 		
