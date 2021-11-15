@@ -111,30 +111,66 @@ public class SystemController {
 		}
 	}
 	
-//	public void getAllRequestsInfo() {
-//		result = requestModel.readAll(myConn);
-//			try {
-//				while (result.next()) {
-//					//to be updated
-//					int reqID= result.getInt("reqID");
-//					int cid = result.getInt("cid");
-//					int eid= result.getInt("eqID");
-//					String requestDate = result.getString("reqDate");
-//					Float quotation=Float.parseFloat(result.getString("quotation"));
-//					Boolean confirmed = result.getBoolean("confirmed");
-//				   //System.out.println("Request ID: "+reqID+"\t Customer Name "+cid+ "\t Employee Name: "+eid+"\t Quotation: "+quotation+"\tConfirmed: "+confirmed);
-//					EmpDash.populateGeneralRequestTable();
-//				}
-//			} catch (NumberFormatException e) {
-//
-//				e.printStackTrace();
-//			} catch (SQLException e) {
-//				
-//				e.printStackTrace();
-//			}
-//			
-//		   
-//	}
+	//To be called in EmpDash
+	public void getAllRequestsInfo() {
+		result = requestModel.readAll(myConn);
+			try {
+				while (result.next()) {
+					
+					String customerName= result.getString("FirstName")+" "+result.getString("LastName");
+					String equipType= result.getString("Type");	
+					String equipName= result.getString("Name");	
+					String reqDate=result.getString("reqDate");
+					Float quotation=Float.parseFloat(result.getString("quotation"));
+					String confirmed = result.getBoolean("confirmed")==true?"confirmed":"denied";
+
+//					//to test
+//					System.out.println("Customer Name "+customerName+
+//							   "\tRequested Equipment Type: "+equipType+"\tEquipment Name: "+equipName+"for "+reqDate+"\tQuotation: "+quotation+"\tConfirmed: "+confirmed);   
+//					
+					//create below function in EmpDash
+//					EmpDash.populateGeneralRequestTable(customerName, equipType, equipName, reqDate, quotation, confirmed);
+				}
+				
+				
+			} catch (NumberFormatException e) {
+
+				e.printStackTrace();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+	}
+	
+	public void getAllCustRequestsInfo(int cid) {
+		result = requestModel.custReq(myConn, cid);
+		
+		try {
+			while (result.next()) {
+				String customerName= result.getString("FirstName")+" "+result.getString("LastName");
+				String equipType= result.getString("Type");	
+				String equipName= result.getString("Name");	
+				String reqDate=result.getString("reqDate");
+				Float quotation=Float.parseFloat(result.getString("quotation"));
+				String confirmed = result.getBoolean("confirmed")==true?"confirmed":"denied";
+			   
+				//to test
+				//System.out.println(customerName+" your request for the: "+equipType+" equipment"+equipName+" for "+"qoutation"+rentDate+" has been: "+confirmed);
+
+				CusDash.populateCustomerRequestTable(customerName, equipType, equipName, reqDate, quotation, confirmed);
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
 		
 	
 
