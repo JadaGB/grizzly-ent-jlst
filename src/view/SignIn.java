@@ -95,10 +95,13 @@ public class SignIn extends JFrame {
 				
 				boolean grantAccess = controller.signin( uType, userID ,  passText);
 				
+				
 				if(grantAccess == true) {
 					//open ParentWindow //Access Granted
 					setVisible(false);
 					pWindow.setVisible(true);
+					
+					controller.getAllCustRequestsInfo(userID);
 					
 				}else if(grantAccess == false) {
 					setVisible(true);

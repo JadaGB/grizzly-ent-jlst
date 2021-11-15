@@ -70,8 +70,9 @@ public class CusDash extends JPanel {
 
 	}
 	
-//	public static void populateGeneralRequestTable() {
-//		//JTable.additem(paras);
-//	}
+	public static void populateCustomerRequestTable(String customerName,String equipType, String equipName, String reqDate, Float quotation, String confirmed ) {
+		//Shaheim - Add parameters to each row in JTable
+		//JTable variable name.additemstorow[i](customerName, equipType, equipName, reqDate, quotation, confirmed);
+	}
 
 }

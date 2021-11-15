@@ -113,6 +113,9 @@ public class ParentWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				panel_1.removeAll();
 				panel_1.add(dash1);
+				
+				//might not need to call here called in signin //need to get from signin
+//				controller.getAllCustRequestsInfo(1); 
 				panel_1.setVisible(true);
 				
 				revalidate();
