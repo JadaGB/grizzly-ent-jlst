@@ -8,6 +8,8 @@ import model.Customer;
 import model.Employee;
 import model.Equipment;
 import model.EquipmentType;
+import model.Request;
+import view.EmpDash;
 import view.Login1;
 import view.NewRequestForm;
 import view.SignIn;
@@ -22,6 +24,7 @@ public class SystemController {
 	private Equipment eqModel;
 	private EquipmentType eqTypeModel;
 	private Login1	empLogin;
+	private Request requestModel;
 	//private SignIn empSignin;
 	
 	ResultSet result;
@@ -32,6 +35,7 @@ public class SystemController {
 		eqModel = new Equipment();
 		eqTypeModel = new EquipmentType();
 		empLogin = new Login1(this);
+		requestModel = new Request();
 		//empSignin = new SignIn(this);
 	}
 	
@@ -102,10 +106,37 @@ public class SystemController {
 				 NewRequestForm.populateEqNamesList(name);
 			 }
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}
+	
+//	public void getAllRequestsInfo() {
+//		result = requestModel.readAll(myConn);
+//			try {
+//				while (result.next()) {
+//					//to be updated
+//					int reqID= result.getInt("reqID");
+//					int cid = result.getInt("cid");
+//					int eid= result.getInt("eqID");
+//					String requestDate = result.getString("reqDate");
+//					Float quotation=Float.parseFloat(result.getString("quotation"));
+//					Boolean confirmed = result.getBoolean("confirmed");
+//				   //System.out.println("Request ID: "+reqID+"\t Customer Name "+cid+ "\t Employee Name: "+eid+"\t Quotation: "+quotation+"\tConfirmed: "+confirmed);
+//					EmpDash.populateGeneralRequestTable();
+//				}
+//			} catch (NumberFormatException e) {
+//
+//				e.printStackTrace();
+//			} catch (SQLException e) {
+//				
+//				e.printStackTrace();
+//			}
+//			
+//		   
+//	}
+		
+	
 
 
 	

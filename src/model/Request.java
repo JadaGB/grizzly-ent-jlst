@@ -235,28 +235,29 @@ public class Request {
 		}
 	}
 	
-	public void readAll(Connection myConn) {
+	//This Method Shows General Requests
+	public ResultSet readAll(Connection myConn) {
 		//String selectSql = "SELECT * FROM ((customer c inner join request r on c.cid = r.cid)inner  join employee) ";
-		String selectSql = "SELECT * FROM request";
+		String selectSql = "SELECT * FROM request"; //update
 		
 		
 		
 		try {
 			stmt = myConn.createStatement();
 			result = stmt.executeQuery(selectSql);
-			while (result.next()) {
-				int reqID= result.getInt("reqID");
-				int cid = result.getInt("cid");
-				int eid= result.getInt("eqID");
-				String requestDate = result.getString("reqDate");
-				Float quotation=Float.parseFloat(result.getString("quotation"));
-				Boolean confirmed = result.getBoolean("confirmed");
-			   System.out.println("Request ID: "+reqID+"\t Customer Name "+cid+
-					   "\t Employee Name: "+eid+"\t Quotation: "+quotation+"\tConfirmed: "+confirmed);
-			 
-			
-			   
-			}
+//			while (result.next()) {
+//				int reqID= result.getInt("reqID");
+//				int cid = result.getInt("cid");
+//				int eid= result.getInt("eqID");
+//				String requestDate = result.getString("reqDate");
+//				Float quotation=Float.parseFloat(result.getString("quotation"));
+//				Boolean confirmed = result.getBoolean("confirmed");
+//			   System.out.println("Request ID: "+reqID+"\t Customer Name "+cid+
+//					   "\t Employee Name: "+eid+"\t Quotation: "+quotation+"\tConfirmed: "+confirmed);
+//			 
+//			
+//			   
+//			}
 			
 			//Might need this??	
 			Logger.info("Queried Request table for all records");
@@ -268,24 +269,30 @@ public class Request {
 			Logger.error("Error: ",e.getMessage());
 		}
 		
+		return result;
+		
 	}
+	
 	//This Method Shows Personal Requests
-		public void custReq(Connection myConn,int id) {
+		public ResultSet custReq(Connection myConn,int id) {
 //			String selectSql = "SELECT customer.cid,equipmenttype.Type FROM (( request INNER JOIN customer on request.cid = customer.cid)  inner join request on request.eqTypeID=equipmenttype.eqTypeID)";
+			//update
 			String selectSql =  "SELECT  customer.LastName,customer.FirstName, equipmenttype.type FROM ((request INNER JOIN customer ON request.cid ="+id+") INNER JOIN equipmenttype ON request.eqID = equipmenttype.eqTypeID)";
 			try {
 				stmt =myConn.createStatement();
 				result = stmt.executeQuery(selectSql);
-				while (result.next()) {
-					String customerName= result.getString("FirstName")+" "+result.getString("LastName");
-					String equipType= result.getString("Type");	
-				   System.out.println(customerName+" requested: "+equipType);
-
-				}
+//				while (result.next()) {
+//					String customerName= result.getString("FirstName")+" "+result.getString("LastName");
+//					String equipType= result.getString("Type");	
+//				   System.out.println(customerName+" requested: "+equipType);
+//
+//				}
 			}catch(SQLException e) {
 				System.err.println("Error Selecting all" + e.getMessage());
 				Logger.error("Error: ",e.getMessage());
 			}
+			
+			return result;
 		}
 		
 //	public String readReqDate(Connection myConn) {
