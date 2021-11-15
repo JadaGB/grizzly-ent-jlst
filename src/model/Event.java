@@ -1,6 +1,35 @@
 package model;
 
+/*
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;*/
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import controller.SessionFactoryBuilder;
+
+/*
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,29 +37,29 @@ import java.sql.Statement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import controller.DBConnection;
+import controller.DBConnection;*/
 
+@Entity(name="event")
+@Table(name="event")
 public class Event {
-	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="evID")
 	private int evID;
+	@Column(name="eventName")
 	private String eventName;
-	
+/*	
 	private Statement stmt = null;
 	private ResultSet result = null;
 	private static Connection connection = null;
 	
 	private static final Logger Logger=LogManager.getLogger(Event.class);
-	
+*/	
 	public Event() {
 		this.evID = 0000;
 		this.eventName = "";
 	}
 
-	
-	
-
-	
-	
 	public Event( String eventName) {
 		
 		//this.evID = evID;
@@ -46,7 +75,7 @@ public class Event {
 		return evID;
 	}
 
-	public void setEvID(Connection myConn) {
+/*	public void setEvID(Connection myConn) {
 		
 		String selectSql = "SELECT last_insert_id() as last_id from event";
 		
@@ -67,7 +96,7 @@ public class Event {
 		
 		//this.evID = evID;
 	}
-
+*/
 	public String getEventName() {
 		return eventName;
 	}
@@ -80,7 +109,7 @@ public class Event {
 	public String toString() {
 		return "Event ID: " + evID + ", Event Name: " + eventName + "\n";
 	}
-	
+/*	
 	public void create(Event event, Connection myConn) {
 		
 		evID = event.getEvID();
@@ -141,5 +170,55 @@ public class Event {
 			Logger.error("Error: ",e.getMessage());
 		}
 	}
+*/
+	public void create() {
+		Session session = SessionFactoryBuilder
+							.getSessionFactory().getCurrentSession();
+		
+		Transaction transaction = session.beginTransaction();
+		session.save(this);
+		transaction.commit();
+		session.close();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Event> read_All(){
+		List<Event> evid=new ArrayList<>();
+		Session session = SessionFactoryBuilder
+							.getSessionFactory()
+							.getCurrentSession();
+		Transaction transaction = session.beginTransaction();
+		evid = (List<Event>) session.createQuery("FROM event")
+											 .getResultList();
+		
+		transaction.commit();
+        session.close();
+		return evid;
+				
+	}
+	
+	public void delete() {
+		Session session = SessionFactoryBuilder
+							.getSessionFactory()
+							.getCurrentSession();
+		Transaction transaction = session.beginTransaction();
+		Event stu = (Event) session.get(Event.class, this.evID);
+		session.delete(stu);
+		transaction.commit();
+        session.close();
+        
+	}
+	public Event read() {
+		Session session = SessionFactoryBuilder
+				.getSessionFactory()
+				.getCurrentSession();
+		Transaction transaction = session.beginTransaction();
+		Event stu = (Event) session.get(Event.class, this.evID);
+		transaction.commit();
+        session.close();
+        return stu;
+	}
+	
 	
 }

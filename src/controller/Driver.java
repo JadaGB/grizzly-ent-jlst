@@ -51,8 +51,9 @@ public class Driver {
 		
 //-----------------------------------------------------------		
 		
-		EquipmentType et = new EquipmentType("lighting");
+//		EquipmentType et = new EquipmentType("lighting");
 //		et.create(et, myConn);
+//		et.create(); "hibernate write"		
 //		et.setEqTypeID(myConn);
 //		System.out.println(et.getEqTypeID());
 //		et.readAll(myConn); //+
@@ -69,7 +70,8 @@ public class Driver {
 //	-------------------------------------------------------	
 		
 //		Event ev = new Event("Dummy Event"); //primary constructor
-//		ev.create(ev, myConn); //+
+//		ev.create(); //+
+//		ev.create(); "hibernate method"
 //		ev.setEvID(myConn); //+
 //		System.out.println(ev.getEvID()); //+
 		
