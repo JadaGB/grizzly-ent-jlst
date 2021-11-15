@@ -165,6 +165,24 @@ public class Employee {
 		}
 	}
 	
+	public void readEquipType(Connection myConn,int id) {
+		String selectSql = "SELECT Type FROM equipmenttype t1 INNER JOIN employee t2 ON t1.eqTypeID = "+id;
+ 
+		try {
+			stmt =myConn.createStatement();
+			result = stmt.executeQuery(selectSql);
+			while (result.next()) {
+				String equipType= result.getString("Type");	
+			   System.out.println("This Employee is Responsible For: "+equipType);
+			   break;
+			}
+			Logger.info("Queried Equipment Table for Type of Equipment managed by employee");
+
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+	}
 	public void updatePersonalInfo(String fName, String lName, int eqTypeID, int empId, Connection myConn) {
 		String query = "update employee set FirstName = ?, LastName = ?, eTypeID = ? where empId = ?";
 		

@@ -269,7 +269,25 @@ public class Request {
 		}
 		
 	}
-	
+	//This Method Shows Personal Requests
+		public void custReq(Connection myConn,int id) {
+//			String selectSql = "SELECT customer.cid,equipmenttype.Type FROM (( request INNER JOIN customer on request.cid = customer.cid)  inner join request on request.eqTypeID=equipmenttype.eqTypeID)";
+			String selectSql =  "SELECT  customer.LastName,customer.FirstName, equipmenttype.type FROM ((request INNER JOIN customer ON request.cid ="+id+") INNER JOIN equipmenttype ON request.eqID = equipmenttype.eqTypeID)";
+			try {
+				stmt =myConn.createStatement();
+				result = stmt.executeQuery(selectSql);
+				while (result.next()) {
+					String customerName= result.getString("FirstName")+" "+result.getString("LastName");
+					String equipType= result.getString("Type");	
+				   System.out.println(customerName+" requested: "+equipType);
+
+				}
+			}catch(SQLException e) {
+				System.err.println("Error Selecting all" + e.getMessage());
+				Logger.error("Error: ",e.getMessage());
+			}
+		}
+		
 //	public String readReqDate(Connection myConn) {
 //		//String selectSql = "SELECT * FROM ((customer c inner join request r on c.cid = r.cid)inner  join employee) ";
 //				String selectSql = "SELECT reqDate FROM request";

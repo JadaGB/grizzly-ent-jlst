@@ -162,6 +162,26 @@ public class Equipment {
 		}
 	}
 	
+	
+	//Reads the names of all equipment by there type
+	public void readEqName(Connection myConn,int id) {
+		String selectSql = "SELECT  Name FROM equipment t1 INNER JOIN equipmenttype t2 ON t1.TypeID = "+id;
+		 
+		try {
+			stmt =myConn.createStatement();
+			result = stmt.executeQuery(selectSql);
+		    System.out.println("Equipment in Table");
+			while (result.next()) {
+				String equipType= result.getString("Name");
+			    System.out.println(equipType);
+
+			}
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+	}
+	
 	public void delete(String eqId, Connection myConn) {
 		String query="Delete from equipment where eqID = ?";
 		
