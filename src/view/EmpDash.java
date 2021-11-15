@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 
-public class Dash extends JPanel {
+public class EmpDash extends JPanel {
 
 	private NewRequestForm newReq;
 	private SystemController controller;
@@ -23,7 +23,7 @@ public class Dash extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Dash(SystemController c) {
+	public EmpDash(SystemController c) {
 		
 		controller = c;
 		
@@ -41,7 +41,7 @@ public class Dash extends JPanel {
 				newReq.setVisible(true);
 			}
 		});
-		btnNewButton.setIcon(new ImageIcon(((new ImageIcon(Dash.class.getResource("/image/plus sign transparent.jpg"))).getImage()).getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH)));
+		btnNewButton.setIcon(new ImageIcon(((new ImageIcon(EmpDash.class.getResource("/image/plus sign transparent.jpg"))).getImage()).getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH)));
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnNewButton.setBounds(10, 59, 148, 33);
 		btnNewButton.setBorderPainted(false);
@@ -69,5 +69,9 @@ public class Dash extends JPanel {
 		add(lblNewLabel);
 
 	}
+	
+//	public static void populateGeneralRequestTable() {
+//		//JTable.additem(paras);
+//	}
 
 }

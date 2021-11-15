@@ -69,7 +69,7 @@ public class Home extends JPanel {
 				
 			}
 		});
-		btnNewButton_1.setIcon(new ImageIcon(((new ImageIcon(Dash.class.getResource("/image/plus sign transparent.jpg"))).getImage()).getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH)));
+		btnNewButton_1.setIcon(new ImageIcon(((new ImageIcon(EmpDash.class.getResource("/image/plus sign transparent.jpg"))).getImage()).getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH)));
 		btnNewButton_1.setBounds(504, 10, 85, 32);
 		btnNewButton_1.setBorderPainted(false);
 		btnNewButton_1.setOpaque(true);
