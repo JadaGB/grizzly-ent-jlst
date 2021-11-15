@@ -257,4 +257,34 @@ public class Employee {
 		}
 	}
 	
+	public boolean authenticateEmployee(int empID, String ePass, Connection myConn ) {
+		String selectSql = "SELECT * FROM employee WHERE empId = ? AND Password = ?";
+		boolean exist = false;
+		
+		try {
+			PreparedStatement ps = myConn.prepareStatement(selectSql);
+			
+			
+			ps.setInt(1, empID);
+			ps.setString(2, ePass);
+			ps.execute();
+			
+			result = ps.getResultSet();
+			
+			if(result.next() == true) {
+				exist = true;
+				System.out.println("P: "+result.getString(1)); //test
+			} else {
+
+				System.out.println("Not Found"); //test
+			}
+			
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+		
+		return exist;
+	}
+	
 }

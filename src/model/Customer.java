@@ -269,7 +269,37 @@ public class Customer {
 		}
 	}
 	
+	public boolean authenticateCustomer(int cusID, String cPass, Connection myConn ) {
+		String selectSql = "SELECT cid, Password FROM customer WHERE cid = ? and Password = ?";
+		boolean exist = false;
+		
+		try {
+			PreparedStatement ps = myConn.prepareStatement(selectSql);
+			
+			
+			ps.setInt(1, cusID);
+			ps.setString(2, cPass);
+			//ps.execute();
+			
+			ps.execute();
+			
+			result = ps.getResultSet();
+			
+			if(result.next() == true) {
+				exist = true;
+				//System.out.println("P: "+result.getString(1)); //test
+			} else {
 
+				System.out.println("Not Found"); //test
+			}
+			
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+		
+		return exist;
+	}
 	
 	/*public void getEvent() {
 	String selectSql ="SELECT * FROM (customer c inner join event e on c.cid = e.cid) ";
