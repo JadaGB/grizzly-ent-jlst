@@ -238,14 +238,14 @@ public class Request {
 	//This Method Shows General Requests
 	public ResultSet readAll(Connection myConn) {
 		//String selectSql = "SELECT * FROM ((customer c inner join request r on c.cid = r.cid)inner  join employee) ";
-		String selectSql = "SELECT * FROM request"; //update
-		
-		
-		
+//		String selectSql = "SELECT * FROM request"; //update
+		String selectSql =  "SELECT  equipment.NAme,customer.LastName,customer.FirstName,request.reqDate,request.quotation,request.confirmed,equipmenttype.type"+
+" FROM ((request INNER JOIN customer ON request.cid =customer.cid) INNER JOIN equipmenttype ON request.eqID = equipmenttype.eqTypeID)"+
+				" INNER JOIN equipment ON equipment.TypeID = equipmenttype.eqTypeID";
 		try {
 			stmt = myConn.createStatement();
 			result = stmt.executeQuery(selectSql);
-//			while (result.next()) {
+			while (result.next()) {
 //				int reqID= result.getInt("reqID");
 //				int cid = result.getInt("cid");
 //				int eid= result.getInt("eqID");
@@ -253,11 +253,20 @@ public class Request {
 //				Float quotation=Float.parseFloat(result.getString("quotation"));
 //				Boolean confirmed = result.getBoolean("confirmed");
 //			   System.out.println("Request ID: "+reqID+"\t Customer Name "+cid+
-//					   "\t Employee Name: "+eid+"\t Quotation: "+quotation+"\tConfirmed: "+confirmed);
-//			 
-//			
-//			   
-//			}
+//					   "\t Employee Name: "+eid+"\t Quotation: "+quotation+"\tConfirmed: "+confirmed);   
+				String customerName= result.getString("FirstName")+" "+result.getString("LastName");
+				String equipType= result.getString("Type");	
+				String equipName= result.getString("Name");	
+				String reqDate=result.getString("reqDate");
+				Float quotation=Float.parseFloat(result.getString("quotation"));
+
+				String confirmed = result.getBoolean("confirmed")==true?"confirmed":"denied";
+
+//				String confirmed=result.getString(4) =="0"?"denied":"confirmed";
+				System.out.println("Customer Name "+customerName+
+						   "\tRequested Equipment Type: "+equipType+"\tEquipment Name: "+equipName+"for "+reqDate+"\tQuotation: "+quotation+"\tConfirmed: "+confirmed);   
+				
+			}
 			
 			//Might need this??	
 			Logger.info("Queried Request table for all records");
@@ -277,16 +286,22 @@ public class Request {
 		public ResultSet custReq(Connection myConn,int id) {
 //			String selectSql = "SELECT customer.cid,equipmenttype.Type FROM (( request INNER JOIN customer on request.cid = customer.cid)  inner join request on request.eqTypeID=equipmenttype.eqTypeID)";
 			//update
-			String selectSql =  "SELECT  customer.LastName,customer.FirstName, equipmenttype.type FROM ((request INNER JOIN customer ON request.cid ="+id+") INNER JOIN equipmenttype ON request.eqID = equipmenttype.eqTypeID)";
+			String selectSql =  "SELECT equipment.Name,customer.LastName,customer.FirstName,request.reqDate,request.quotation,request.confirmed,equipmenttype.type FROM ((request INNER JOIN customer ON request.cid ="+id+")"+
+			" INNER JOIN equipmenttype ON request.eqID = equipmenttype.eqTypeID) INNER JOIN equipment ON equipment.TypeID = equipmenttype.eqTypeID";
 			try {
 				stmt =myConn.createStatement();
 				result = stmt.executeQuery(selectSql);
-//				while (result.next()) {
-//					String customerName= result.getString("FirstName")+" "+result.getString("LastName");
-//					String equipType= result.getString("Type");	
-//				   System.out.println(customerName+" requested: "+equipType);
-//
-//				}
+				while (result.next()) {
+					String customerName= result.getString("FirstName")+" "+result.getString("LastName");
+					String equipType= result.getString("Type");	
+					String equipName= result.getString("Name");	
+					String rentDate=result.getString("reqDate");
+					Float quotation=Float.parseFloat(result.getString("quotation"));
+					String confirmed = result.getBoolean("confirmed")==true?"confirmed":"denied";
+				   
+					System.out.println(customerName+" your request for the: "+equipType+" equipment"+equipName+" for "+"qoutation"+rentDate+" has been: "+confirmed);
+
+				}
 			}catch(SQLException e) {
 				System.err.println("Error Selecting all" + e.getMessage());
 				Logger.error("Error: ",e.getMessage());
