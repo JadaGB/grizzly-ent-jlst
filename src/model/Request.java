@@ -235,7 +235,7 @@ public class Request {
 		}
 	}
 	
-	//This Method Shows General Requests
+	//This Method Shows General Requests -Employee View
 	public ResultSet readAll(Connection myConn) {
 		//String selectSql = "SELECT * FROM ((customer c inner join request r on c.cid = r.cid)inner  join employee) ";
 //		String selectSql = "SELECT * FROM request"; //update
@@ -245,28 +245,7 @@ public class Request {
 		try {
 			stmt = myConn.createStatement();
 			result = stmt.executeQuery(selectSql);
-			while (result.next()) {
-//				int reqID= result.getInt("reqID");
-//				int cid = result.getInt("cid");
-//				int eid= result.getInt("eqID");
-//				String requestDate = result.getString("reqDate");
-//				Float quotation=Float.parseFloat(result.getString("quotation"));
-//				Boolean confirmed = result.getBoolean("confirmed");
-//			   System.out.println("Request ID: "+reqID+"\t Customer Name "+cid+
-//					   "\t Employee Name: "+eid+"\t Quotation: "+quotation+"\tConfirmed: "+confirmed);   
-				String customerName= result.getString("FirstName")+" "+result.getString("LastName");
-				String equipType= result.getString("Type");	
-				String equipName= result.getString("Name");	
-				String reqDate=result.getString("reqDate");
-				Float quotation=Float.parseFloat(result.getString("quotation"));
 
-				String confirmed = result.getBoolean("confirmed")==true?"confirmed":"denied";
-
-//				String confirmed=result.getString(4) =="0"?"denied":"confirmed";
-				System.out.println("Customer Name "+customerName+
-						   "\tRequested Equipment Type: "+equipType+"\tEquipment Name: "+equipName+"for "+reqDate+"\tQuotation: "+quotation+"\tConfirmed: "+confirmed);   
-				
-			}
 			
 			//Might need this??	
 			Logger.info("Queried Request table for all records");
@@ -282,7 +261,7 @@ public class Request {
 		
 	}
 	
-	//This Method Shows Personal Requests
+	//This Method Shows Personal Requests - Customer View
 		public ResultSet custReq(Connection myConn,int id) {
 //			String selectSql = "SELECT customer.cid,equipmenttype.Type FROM (( request INNER JOIN customer on request.cid = customer.cid)  inner join request on request.eqTypeID=equipmenttype.eqTypeID)";
 			//update
@@ -291,17 +270,7 @@ public class Request {
 			try {
 				stmt =myConn.createStatement();
 				result = stmt.executeQuery(selectSql);
-				while (result.next()) {
-					String customerName= result.getString("FirstName")+" "+result.getString("LastName");
-					String equipType= result.getString("Type");	
-					String equipName= result.getString("Name");	
-					String rentDate=result.getString("reqDate");
-					Float quotation=Float.parseFloat(result.getString("quotation"));
-					String confirmed = result.getBoolean("confirmed")==true?"confirmed":"denied";
-				   
-					System.out.println(customerName+" your request for the: "+equipType+" equipment"+equipName+" for "+"qoutation"+rentDate+" has been: "+confirmed);
-
-				}
+				
 			}catch(SQLException e) {
 				System.err.println("Error Selecting all" + e.getMessage());
 				Logger.error("Error: ",e.getMessage());
