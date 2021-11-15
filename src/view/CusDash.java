@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 
-public class EmpDash extends JPanel {
+public class CusDash extends JPanel {
 
 	private NewRequestForm newReq;
 	private SystemController controller;
@@ -23,7 +23,7 @@ public class EmpDash extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public EmpDash(SystemController c) {
+	public CusDash(SystemController c) {
 		
 		controller = c;
 		
@@ -41,7 +41,7 @@ public class EmpDash extends JPanel {
 				newReq.setVisible(true);
 			}
 		});
-		btnNewButton.setIcon(new ImageIcon(((new ImageIcon(EmpDash.class.getResource("/image/plus sign transparent.jpg"))).getImage()).getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH)));
+		btnNewButton.setIcon(new ImageIcon(((new ImageIcon(CusDash.class.getResource("/image/plus sign transparent.jpg"))).getImage()).getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH)));
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnNewButton.setBounds(10, 59, 148, 33);
 		btnNewButton.setBorderPainted(false);

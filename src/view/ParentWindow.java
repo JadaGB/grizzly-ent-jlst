@@ -25,8 +25,8 @@ public class ParentWindow extends JFrame {
 	private SystemController controller;
 
 	private JPanel contentPane;
-	private EmpDash dash1;
-	private EmpHome home1;
+	private CusDash dash1;
+	private CusHome home1;
 
 	/**
 	 * Launch the application.
@@ -75,11 +75,11 @@ public class ParentWindow extends JFrame {
 		
 		panel_1.setVisible(false);
 		
-		dash1 = new EmpDash(c);
+		dash1 = new CusDash(c);
 		dash1.setBounds(0, 0, 668, 439);
 		
 		
-		home1 = new EmpHome(c);
+		home1 = new CusHome(c);
 		home1.setBounds(0, 0, 668, 439);
 		panel_1.add(home1);
 		panel_1.setVisible(true);

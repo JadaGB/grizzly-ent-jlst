@@ -15,7 +15,7 @@ import controller.SystemController;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class EmpHome extends JPanel {
+public class CusHome extends JPanel {
 	
 	private NewRequestForm newReq;
 	
@@ -24,7 +24,7 @@ public class EmpHome extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public EmpHome(SystemController c) {
+	public CusHome(SystemController c) {
 		
 		controller = c;
 		
@@ -69,7 +69,7 @@ public class EmpHome extends JPanel {
 				
 			}
 		});
-		btnNewButton_1.setIcon(new ImageIcon(((new ImageIcon(EmpDash.class.getResource("/image/plus sign transparent.jpg"))).getImage()).getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH)));
+		btnNewButton_1.setIcon(new ImageIcon(((new ImageIcon(CusDash.class.getResource("/image/plus sign transparent.jpg"))).getImage()).getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH)));
 		btnNewButton_1.setBounds(504, 10, 85, 32);
 		btnNewButton_1.setBorderPainted(false);
 		btnNewButton_1.setOpaque(true);

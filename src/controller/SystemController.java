@@ -9,7 +9,7 @@ import model.Employee;
 import model.Equipment;
 import model.EquipmentType;
 import model.Request;
-import view.EmpDash;
+import view.CusDash;
 import view.Login1;
 import view.NewRequestForm;
 import view.SignIn;
