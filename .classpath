@@ -26,5 +26,6 @@
 	<classpathentry kind="lib" path="C:/mysql-connector-java-8.0.26/mysql-connector-java-8.0.26.jar"/>
 	<classpathentry kind="lib" path="C:/apache-log4j-2.14.1-bin/log4j-api-2.14.1.jar"/>
 	<classpathentry kind="lib" path="C:/apache-log4j-2.14.1-bin/log4j-core-2.14.1.jar"/>
+	<classpathentry kind="lib" path="properties"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
