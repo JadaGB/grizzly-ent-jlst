@@ -84,22 +84,16 @@ public class EquipmentType {
 			
 	}
 	
-	public void readAll(Connection myConn) {
-		String selectSql = "SELECT * FROM equipmenttype";
+	public ResultSet readAll(Connection myConn) {
+		String selectSql = "SELECT Type FROM equipmenttype";
 		
 		try {
 			stmt = myConn.createStatement();
 			result = stmt.executeQuery(selectSql);
-			while (result.next()) {
-				int eqTypeID = result.getInt("eqTypeID");
-				String type = result.getString("Type");
-				
-					
-			    System.out.println("Equipment Type ID: "+eqTypeID+"\t Equipment Name: "+type);
-			}
-		//Might need this??	
+
 		Logger.info("Queried Equipment Type table for all records");
 		
+			
 		}catch(NullPointerException e) {
 			System.err.println(e.getMessage());
 			Logger.error("Error: ",e.getMessage());
@@ -112,6 +106,8 @@ public class EquipmentType {
 			System.err.println("Error Selecting all" + e.getMessage());
 			Logger.error("Error: ",e.getMessage());
 		}
+		
+		return result;
 	}
 	
 	
