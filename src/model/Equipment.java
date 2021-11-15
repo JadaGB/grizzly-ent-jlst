@@ -231,6 +231,53 @@ public class Equipment {
 			Logger.error("Error: ",e.getMessage());
 		}
 	}
+	
+	public ResultSet readAllEquipNames(String typeSel, Connection myConn) {
+		
+		int TypeID = 0;
+		
+		if (typeSel.equalsIgnoreCase("lighting")) {
+			TypeID = 1;
+		}
+		if (typeSel.equalsIgnoreCase("staging")) {
+			TypeID = 2;
+		}
+		if (typeSel.equalsIgnoreCase("power")) {
+			TypeID = 3;
+		}
+		if (typeSel.equalsIgnoreCase("sound")) {
+			TypeID = 4;
+		}
+		String selectSql = "SELECT Name FROM equipment WHERE TypeID = ?";
+		
+		try {
+			PreparedStatement ps = myConn.prepareStatement(selectSql);
+			
+			System.out.println("type id in try: "+ TypeID);
+			ps.setInt(1, TypeID);
+			
+			ps.execute();
+			
+			result = ps.getResultSet();
+			
+		Logger.info("Queried Equipment table for all records");
+		
+		}catch(NullPointerException e) {
+			System.err.println(e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+		catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+		catch(Exception e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+		
+		return result;
+	}
+	
 
 	@Override
 	public String toString() {
