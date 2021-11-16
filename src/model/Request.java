@@ -239,7 +239,7 @@ public class Request {
 	public ResultSet readAll(Connection myConn) {
 		//String selectSql = "SELECT * FROM ((customer c inner join request r on c.cid = r.cid)inner  join employee) ";
 //		String selectSql = "SELECT * FROM request"; //update
-		String selectSql =  "SELECT  equipment.NAme,customer.LastName,customer.FirstName,request.reqDate,request.quotation,request.confirmed,equipmenttype.type"+
+		String selectSql =  "SELECT  equipment.Name,customer.LastName,customer.FirstName,request.reqDate,request.quotation,request.confirmed,equipmenttype.type"+
 " FROM ((request INNER JOIN customer ON request.cid =customer.cid) INNER JOIN equipmenttype ON request.eqID = equipmenttype.eqTypeID)"+
 				" INNER JOIN equipment ON equipment.TypeID = equipmenttype.eqTypeID";
 		try {

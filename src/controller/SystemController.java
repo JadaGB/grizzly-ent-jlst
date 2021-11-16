@@ -3,12 +3,16 @@ package controller;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+
 
 import model.Customer;
 import model.Employee;
 import model.Equipment;
 import model.EquipmentType;
 import model.Request;
+
+import view.ParentWindow;
 import view.CusDash;
 import view.Login1;
 import view.NewRequestForm;
@@ -36,17 +40,18 @@ public class SystemController {
 		eqTypeModel = new EquipmentType();
 		empLogin = new Login1(this);
 		requestModel = new Request();
-		//empSignin = new SignIn(this);
+//		empSignin = new SignIn(this);
 	}
+	
 	
 	
 	public void login1(String userType) {
 		
 		if (userType.equalsIgnoreCase("employee")) {
-			SignIn.getUserType("employee");
+			SignIn.getUserType( userType);
 			
 		}else if (userType.equalsIgnoreCase("customer")) {
-			SignIn.getUserType("customer");
+			SignIn.getUserType( userType);
 		}
 		
 	}
@@ -143,21 +148,116 @@ public class SystemController {
 	}
 	
 	public void getAllCustRequestsInfo(int cid) {
-		result = requestModel.custReq(myConn, cid);
-		
 		try {
-			while (result.next()) {
+				
+//		int index=stm.executeUpdate(query);
+//		System.out.println("RowCount"+index);
+		result = requestModel.custReq(myConn, cid);
+		String data[][] = new String[100][6];
+		
+		int i=0;
+		while (result.next()) {
 				String customerName= result.getString("FirstName")+" "+result.getString("LastName");
 				String equipType= result.getString("Type");	
 				String equipName= result.getString("Name");	
 				String reqDate=result.getString("reqDate");
 				Float quotation=Float.parseFloat(result.getString("quotation"));
 				String confirmed = result.getBoolean("confirmed")==true?"confirmed":"denied";
-			   
+				 data[i][0] = customerName;
+		         data[i][1] = equipType;
+		         data[i][2] = equipName;
+		         data[i][3] =quotation+" ";
+		         data[i][4] =reqDate;
+		         data[i][5] =confirmed;
+		         i++;
+//			   index++;
 				//to test
 				//System.out.println(customerName+" your request for the: "+equipType+" equipment"+equipName+" for "+"qoutation"+rentDate+" has been: "+confirmed);
+					CusDash.populateCustomerRequestTable(data);
 
-				CusDash.populateCustomerRequestTable(customerName, equipType, equipName, reqDate, quotation, confirmed);
+//				CusDash.populateCustomerRequestTable(index,customerName, equipType, equipName, reqDate, quotation, confirmed);
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void getAllCustPastTransactions(int cid) {
+		try {
+	
+		result = requestModel.custReq(myConn, cid);
+		String data[][] = new String[100][6];
+		
+		int i=0;
+		while (result.next()) {
+				String customerName= result.getString("FirstName")+" "+result.getString("LastName");
+				String equipType= result.getString("Type");	
+				String equipName= result.getString("Name");	
+				String reqDate=result.getString("reqDate");
+				Float quotation=Float.parseFloat(result.getString("quotation"));
+				String confirmed = result.getBoolean("confirmed")==true?"confirmed":"denied";
+				 data[i][0] = customerName;
+		         data[i][1] = equipType;
+		         data[i][2] = equipName;
+		         data[i][3] =quotation+" ";
+		         data[i][4] =reqDate;
+		         data[i][5] =confirmed;
+		         i++;
+
+				//to test
+				//System.out.println(customerName+" your request for the: "+equipType+" equipment"+equipName+" for "+"qoutation"+rentDate+" has been: "+confirmed);
+					CusDash.populateCustomerTransactionTable(data);
+
+//CusDash.populateCustomerRequestTable(index,customerName, equipType, equipName, reqDate, quotation, confirmed);
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void getAllScheduled(int cid) {
+		try {
+	
+		result = requestModel.custReq(myConn, cid);
+		String data[][] = new String[100][6];
+		int i=0;
+		while (result.next()) {
+				String customerName= result.getString("FirstName")+" "+result.getString("LastName");
+				String equipType= result.getString("Type");	
+				String equipName= result.getString("Name");	
+				String reqDate=result.getString("reqDate");
+				Float quotation=Float.parseFloat(result.getString("quotation"));
+				String confirmed = result.getBoolean("confirmed")==true?"confirmed":"denied";
+				if(confirmed.equalsIgnoreCase("confirmed")) {
+					 data[i][0] = customerName;
+			         data[i][1] = equipType;
+			         data[i][2] = equipName;
+			         data[i][3] =quotation+" ";
+			         data[i][4] =reqDate;
+			         data[i][5] =confirmed;
+			         i++;
+				}
+				else if(confirmed.equalsIgnoreCase("denied")) {
+					continue;
+				}
+				
+		       
+//			   index++;
+				//to test
+				//System.out.println(customerName+" your request for the: "+equipType+" equipment"+equipName+" for "+"qoutation"+rentDate+" has been: "+confirmed);
+					CusDash.populatescheduledTable(data);
+
+//				CusDash.populateCustomerRequestTable(index,customerName, equipType, equipName, reqDate, quotation, confirmed);
 			}
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block

@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.table.DefaultTableModel;
 
 import controller.SystemController;
 
@@ -54,7 +55,7 @@ public class EmpDash extends JPanel {
 		add(lblNewLabel);
 		
 		setVisible(true);
-
 	}
+
 
 }
