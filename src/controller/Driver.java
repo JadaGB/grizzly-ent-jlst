@@ -2,22 +2,31 @@ package controller;
 
 import java.sql.Connection;
 
-import model.Customer;
-import model.Date;
-import model.Employee;
-import model.Equipment;
-import model.EquipmentType;
-import model.Event;
-import model.PastTransaction;
-import model.Request;
-import model.Scheduled;
+import model.*;
+
  
 public class Driver {
 
 	public static void main(String[] args) {
 		DBConnection dbc = new DBConnection();
-		 Connection myConn = dbc.getConnection();
-		 
+		Connection myConn = dbc.getConnection();
+		Client client = new Client();
+		new Server();
+		
+		client.sendAction("customer");
+		System.out.println("Message sent to server");
+		client.receiveResponse();
+		System.out.println("Response Received from server");
+		
+//		Client client2 = new Client();
+//		client2.sendAction("employee");
+//		System.out.println("Record sent to server");
+//		client2.receiveResponse();
+//		System.out.println("Response Received from server");
+//				
+			
+		client.closeConnection();// close conn when done
+			
 		//test CRUD functions
 //		Customer  cus = new Customer("examaple@gmail.com", "John", "Doe", "123456", "000-0000"); 
 //		cus.create(myConn, cus); //+

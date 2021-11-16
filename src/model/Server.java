@@ -3,6 +3,8 @@ package model;
 import java.io.BufferedReader;
 //import java.io.DataInputStream;
 //import java.io.DataOutputStream;
+//import java.io.DataInputStream;
+//import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,7 +38,7 @@ public class Server extends Thread {
 		start();
 		try {
 			
-			serverSocket=new ServerSocket(8000);
+			serverSocket=new ServerSocket(8888);
 			clientCount=0;
 			System.out.println("The server has started "+date);
 			
@@ -64,7 +66,8 @@ public class Server extends Thread {
 			//createConnection();
 			connectionSocket=serverSocket.accept();
 			System.out.println("New client connected: ");
-				
+			run();
+			//
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -73,6 +76,7 @@ public class Server extends Thread {
 	
 	public static void main (String []args) {
 		new Server();
+		
 	}
 }	
 
@@ -84,18 +88,28 @@ class ClientHandler implements Runnable{
 	
 	private Statement stmt = null;
 	
-	private PrintWriter pw;
+//	private DataOutputStream outStream;
+//	private DataInputStream inStream;
+	
 	private BufferedReader reader;
+	private PrintWriter pw;
+	
 	private Socket connectionSocket;
 	private ServerSocket serverSocket;
-		
+	
+	
 	
 	public	ClientHandler(Socket socket){
 		try {
 			createConnection();
 			connectionSocket=socket;
-			pw=new PrintWriter(new OutputStreamWriter(connectionSocket.getOutputStream()));
-			reader=new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+			waitForRequests();
+//			outStream=new DataOutputStream(connectionSocket.getOutputStream());
+//			inStream = new DataInputStream(connectionSocket.getInputStream());
+//			
+			reader = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+			pw =new PrintWriter(new OutputStreamWriter(connectionSocket.getOutputStream()));
+			
 		} catch (IOException e) {
 			closeConnection();
 		}
@@ -125,9 +139,12 @@ class ClientHandler implements Runnable{
 		return myConn;
 	}
 	private void configureStreams()  {
-		try {
+		try {	
 			objOs = new ObjectOutputStream(connectionSocket.getOutputStream());
 			objIs = new ObjectInputStream(connectionSocket.getInputStream());
+//			reader = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+//			pw =new PrintWriter(new OutputStreamWriter(connectionSocket.getOutputStream()));
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -137,9 +154,9 @@ class ClientHandler implements Runnable{
 	
 	private void closeConnection() {
 		try {
-			objOs.close();
-			objIs.close();
 			connectionSocket.close();
+			objIs.close();
+			objOs.close();
 		}catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -151,6 +168,8 @@ class ClientHandler implements Runnable{
 	private  void authenticateCus() { 
 		try {
 			getDatbaseConnection();
+			reader = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+
 			String username = reader.readLine();
 		    String password = reader.readLine();
 		    
@@ -159,18 +178,20 @@ class ClientHandler implements Runnable{
 //          System.out.println("Username Received: " + username);
 //		    System.out.println("Password Received: " + password);
 		    
-		    //pw.println("Server Received without errors");
+		    //outStream.println("Server Received without errors");
 		    
-		    pw.flush();
-			pw.close();
 			
 			String query="SELECT * FROM customer WHERE Password= "+password+"AND cid= "+username;
 			try {
 				if(stmt.executeUpdate(query)==1) {
-				     pw.println(true);
+					pw.println(true);
+					//outStream.writeBoolean(true);
+					LOGGER.info("\nLog in Successful");
+					
 				}else{
 					pw.println(false);
-					System.out.println("Authentification Failed");
+					//outStream.writeBoolean(false);
+					System.out.println("\nAuthentification Failed");
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -188,41 +209,47 @@ class ClientHandler implements Runnable{
 			
      }
 
-	private  void authenticateEmp() { 
+	private void authenticateEmp() { 
 		try {
 			getDatbaseConnection();
+			reader = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+
 			String username = reader.readLine();
-			String password = reader.readLine();
-			LOGGER.info("Connection made through " + connectionSocket);
+		    String password = reader.readLine();
+		    
+		    LOGGER.info("Connection made through " + connectionSocket);
 			LOGGER.info("Connection made successfully.");
 //          System.out.println("Username Received: " + username);
 //		    System.out.println("Password Received: " + password);
 		    
-		    //pw.println("Server Received without errors");
+		    //outStream.println("Server Received without errors");
 		    
-		    pw.flush();
-			pw.close();
-		     
-//		    checkEmployee(username,password);
-		    String query="SELECT * FROM employee WHERE Password= "+password+"AND empId= "+username;
+			
+			String query="SELECT * FROM employee WHERE Password= "+password+"AND empId= "+username;
 			try {
 				if(stmt.executeUpdate(query)==1) {
-				     pw.println(true);
-				        }else{
-				            pw.println(false);
-				        }
+					pw.println(true);
+					//outStream.writeBoolean(true);
+					LOGGER.info("\nLog in Successful");
+					
+				}else{
+					pw.println(false);
+					//outStream.writeBoolean(false);
+					System.out.println("\nAuthentification Failed");
+					
+				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			 pw.flush();
 			 pw.close();
-		   
 		}catch (IOException e) {
 			System.out.println("Error in Client Handler"+e.getMessage());
 			e.printStackTrace();
 			closeConnection();
 		}
+		run();
 			
      }
 
@@ -233,22 +260,59 @@ class ClientHandler implements Runnable{
 		getDatbaseConnection();
 		SystemController loginObj = null;
 		try {
-			while(true) {
+			while(connectionSocket.isConnected()) {
 				connectionSocket = serverSocket.accept();
 				
                 LOGGER.info("Connection made successfully.");
                 this.configureStreams();
 				try {
-					action = (String) objIs.readObject();
+					action = reader.readLine();
 					
 					if (action.equals("customer")) {
+						authenticateCus();						
+					}else if (action.equals("employee")) {	
+						authenticateEmp();
+						
+					}
+					loginObj = (SystemController) objIs.readObject();
+					objOs.writeObject(loginObj);	
+				}catch (ClassNotFoundException ex) {
+					ex.printStackTrace();
+				}catch (ClassCastException ex) {
+					ex.printStackTrace();
+				}
+				closeConnection();
+			}
+		}catch (EOFException ex) {
+			System.out.println("Client terminated connections with server");
+			ex.printStackTrace();
+		}catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+
+
+	private void waitForRequests() {
+		// TODO Auto-generated method stub
+		String action= "";
+		getDatbaseConnection();
+		SystemController loginObj = null;
+		try {
+			while(true) {
+				connectionSocket = serverSocket.accept();
+				this.configureStreams();
+				try {
+					action = (String) objIs.readObject();
+					
+					if (action.equalsIgnoreCase("customer")) {
 						loginObj = (SystemController) objIs.readObject();
 						authenticateCus();
 						objOs.writeObject(loginObj);	
 						
-					}else if (action.equals("employee")) {	
+					}else if (action.equalsIgnoreCase("employee")) {	
 						loginObj = (SystemController) objIs.readObject();
-						authenticateEmp();
+						//authenticateEmp();
 						//checkEmployee(action, action);
 						objOs.writeObject(loginObj);	
 					}
@@ -266,46 +330,7 @@ class ClientHandler implements Runnable{
 			ex.printStackTrace();
 		}
 	}
-	
 }
-
-//private void waitForRequests() {
-//	// TODO Auto-generated method stub
-//	String action= "";
-//	getDatbaseConnection();
-//	SystemController loginObj = null;
-//	try {
-//		while(true) {
-//			connectionSocket = serverSocket.accept();
-//			this.configureStreams();
-//			try {
-//				action = (String) objIs.readObject();
-//				
-//				if (action.equals("customer")) {
-//					loginObj = (SystemController) objIs.readObject();
-//					authenticateCus();
-//					objOs.writeObject(loginObj);	
-//					
-//				}else if (action.equals("employee")) {	
-//					loginObj = (SystemController) objIs.readObject();
-//					authenticateEmp();
-//					//checkEmployee(action, action);
-//					objOs.writeObject(loginObj);	
-//				}
-//			}catch (ClassNotFoundException ex) {
-//				ex.printStackTrace();
-//			}catch (ClassCastException ex) {
-//				ex.printStackTrace();
-//			}
-//			closeConnection();
-//		}
-//	}catch (EOFException ex) {
-//		System.out.println("Client terminated connections with server");
-//		ex.printStackTrace();
-//	}catch (IOException ex) {
-//		ex.printStackTrace();
-//	}
-//}
 //??Fix user input authen	
 //private void checkCustomer(String user,String pass) {
 //	try {
@@ -316,7 +341,7 @@ class ClientHandler implements Runnable{
 //			System.out.println("Username Received: " + username);
 //		    String password = reader.readLine();
 //		    System.out.println("Password Received: " + password);
-//		    pw.println("Server Received without errors");
+//		    outStream.println("Server Received without errors");
 //		}catch (IOException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
@@ -326,13 +351,13 @@ class ClientHandler implements Runnable{
 //	    
 //		String query="SELECT * FROM customer WHERE Password= "+pass+"AND LastName + cid= "+user;
 //		if(stmt.executeUpdate(query)==1) {
-//		     pw.println(true);
+//		     outStream.println(true);
 //		}else{
-//			pw.println(false);
+//			outStream.println(false);
 //			System.out.println("Authentification Failed");
 //		}
-//		 pw.flush();
-//		 pw.close();
+//		 outStream.flush();
+//		 outStream.close();
 //
 //	}catch (SQLException e) {
 //		e.printStackTrace();
@@ -348,7 +373,7 @@ class ClientHandler implements Runnable{
 //				System.out.println("Username Received: " + username);
 //			    String password = reader.readLine();
 //			    System.out.println("Password Received: " + password);
-//			    pw.println("Server Received without errors");
+//			    outStream.println("Server Received without errors");
 //			}catch (IOException e) {
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
@@ -357,12 +382,12 @@ class ClientHandler implements Runnable{
 //			}
 //			String query="SELECT * FROM employee WHERE Password= "+pass+"AND LastName + cid= "+user;
 //			if(stmt.executeUpdate(query)==1) {
-//			     pw.println(true);
+//			     outStream.println(true);
 //			        }else{
-//			            pw.println(false);
+//			            outStream.println(false);
 //			        }
-//			 pw.flush();
-//			 pw.close();
+//			 outStream.flush();
+//			 outStream.close();
 //
 //		} catch (SQLException e) {
 //			e.printStackTrace();

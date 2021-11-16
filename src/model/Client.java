@@ -2,17 +2,19 @@ package model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+//import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 //import java.io.OutputStream;
 import java.net.Socket;
+//import java.sql.Connection;
 
 import javax.swing.JOptionPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+//import controller.DBConnection;
 import controller.SystemController;
 
 
@@ -20,9 +22,11 @@ public class Client {
 	private ObjectOutputStream objOs;
 	private ObjectInputStream objIs;
 	private Socket connectionSocket;
+	
+	//private static Connection myConn;
 	private static String action = "";
 	SystemController login = new SystemController();
-	private InputStream inStream;
+	//private InputStream inStream;
 	private static final Logger LOGGER = LogManager.getLogger(Client.class);
 
 	public Client()  {
@@ -35,8 +39,8 @@ public class Client {
 		try {
 			connectionSocket = new Socket("127.0.0.1",8888);
             connectionSocket.getOutputStream();
-            this.inStream = connectionSocket.getInputStream();
-            new BufferedReader(new InputStreamReader(inStream));
+            objIs = new ObjectInputStream(connectionSocket.getInputStream());
+            new BufferedReader(new InputStreamReader(objIs));
 		}
 		catch (IOException ex) {
 			ex.printStackTrace();
@@ -98,8 +102,10 @@ public class Client {
 				Boolean flag = (Boolean) objIs.readObject();
 				if(flag == true) {
 					JOptionPane.showMessageDialog(null, "Login successful", "Login Status", JOptionPane.INFORMATION_MESSAGE);
+					LOGGER.info("Login successful");
 				}else {
 					JOptionPane.showMessageDialog(null, "Login failed", "Login Status", JOptionPane.INFORMATION_MESSAGE);
+					LOGGER.info("Login failed");
 				}
 			}
 			
@@ -148,6 +154,8 @@ public class Client {
 		client.sendAction(action);;
 		client.receiveResponse();
 	}
+
+	
 }
 
 
