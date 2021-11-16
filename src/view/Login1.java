@@ -82,7 +82,7 @@ public class Login1 extends JFrame {// implements ActionListener{
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
-		signin1 = new SignIn(ec);
+		signin1 = new SignIn(ec, this);
 		signin1.setBounds(100, 100, 694, 483);
 		signin1.setLocationRelativeTo(null);
 		signin1.setVisible(false);
@@ -147,27 +147,8 @@ public class Login1 extends JFrame {// implements ActionListener{
 		setVisible(true);
 		
 	}
+	
 
-
-//	public void actionPerformed(ActionEvent e) {
-//		//employee button
-//		if (e.getSource() == btnNewButton) {
-//			setVisible(false);
-//			signin1.setVisible(true);
-//			
-//			eController.login1("employee");
-//			
-//		}
-//		
-//		if (e.getSource() == btnCustomer) {
-//			setVisible(false);
-//			signin1.setVisible(true);
-//			
-//			eController.login1("customer");
-//			
-//		}
-//		
-//	}
 	
 	
 }

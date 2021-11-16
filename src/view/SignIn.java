@@ -31,6 +31,7 @@ public class SignIn extends JFrame {
 	private ParentWindow pWindow;
 	
 	
+	
 	private SystemController controller;
 
 	/**
@@ -53,7 +54,7 @@ public class SignIn extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SignIn(SystemController c) {
+	public SignIn(SystemController c, Login1 loginW) {
 		
 		controller = c;
 		
@@ -82,8 +83,7 @@ public class SignIn extends JFrame {
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
-		pWindow = new ParentWindow(c);
-		pWindow.setLocationRelativeTo(null);
+		
 		
 		JButton btnNewButton = new JButton("SIGN IN");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -98,6 +98,9 @@ public class SignIn extends JFrame {
 				
 				if(grantAccess == true) {
 					//open ParentWindow //Access Granted
+					pWindow = new ParentWindow(c, uType);
+					pWindow.setLocationRelativeTo(null);
+					
 					setVisible(false);
 					pWindow.setVisible(true);
 					
@@ -163,6 +166,25 @@ public class SignIn extends JFrame {
 		lblNewLabel_4.setForeground(Color.RED);
 		lblNewLabel_4.setBounds(40, 143, 253, 13);
 		panel_1.add(lblNewLabel_4);
+		
+		
+
+		
+		JButton btnNewButton_1 = new JButton("BACK");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				loginW.setVisible(true);
+				
+				
+			}
+		});
+		btnNewButton_1.setBackground(Color.WHITE);
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 10));
+		btnNewButton_1.setBounds(10, 29, 65, 25);
+		btnNewButton_1.setBorderPainted(false);
+		btnNewButton_1.setOpaque(true);
+		panel_1.add(btnNewButton_1);
 		
 		setVisible(false);
 	}
