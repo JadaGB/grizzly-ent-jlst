@@ -92,7 +92,7 @@ public class SignIn extends JFrame {
 				String uType = lbluserType.getText();
 				String passText = new String(passwordField.getPassword());
 				int userID = Integer.parseInt(textField_1.getText());
-				
+				NewRequestForm.grabId(userID);
 				boolean grantAccess = controller.signin( uType, userID ,  passText);
 				
 				

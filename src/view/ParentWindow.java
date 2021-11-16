@@ -39,9 +39,9 @@ public class ParentWindow extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-//					ParentWindow frame = new ParentWindow();
-//					frame.setLocationRelativeTo(null);
-//					frame.setVisible(true);
+					ParentWindow frame = new ParentWindow(new SystemController(),"customer");
+					frame.setLocationRelativeTo(null);
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

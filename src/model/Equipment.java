@@ -162,6 +162,20 @@ public class Equipment {
 		}
 	}
 	
+	public ResultSet getequipId(Connection myConn,String name) {
+		String selectSql = "SELECT eqID FROM equipment where Name = "+name;
+		try {
+			stmt =myConn.createStatement();
+			result = stmt.executeQuery(selectSql);
+		    System.out.println("Equipment in Table");
+			
+			
+		}catch(SQLException e) {
+			System.err.println("Error Selecting all" + e.getMessage());
+			Logger.error("Error: ",e.getMessage());
+		}
+		return result;
+	}
 	
 	//Reads the names of all equipment by there type
 	public void readEqName(Connection myConn,int id) {

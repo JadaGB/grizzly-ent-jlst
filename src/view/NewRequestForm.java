@@ -10,6 +10,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.SystemController;
+import model.Date;
+import model.Employee;
+import model.Equipment;
+import model.Request;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -42,7 +46,8 @@ public class NewRequestForm extends JFrame {
 	private static JComboBox comboBox_1;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
-
+	private static int cusId;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -63,7 +68,8 @@ public class NewRequestForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public NewRequestForm(SystemController c) {
+public NewRequestForm(SystemController c) {
+		
 		controller = c;
 		setLocationRelativeTo(null);
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -147,7 +153,15 @@ public class NewRequestForm extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				//if clicked call create request func
-				
+				String equipName=(String) comboBox_1.getSelectedItem();
+				int eid=controller.getEquipid(equipName);
+			
+				int day=Integer.parseInt(txtDate.getText().substring(3,4));
+				int month=Integer.parseInt(txtDate.getText().substring(0,1));
+				int year=Integer.parseInt(txtDate.getText().substring(6,9));
+
+				Request newRequest=new Request(cusId,eid,new Date(day,month,year));
+				controller.addNewRequest(newRequest);;
 				setVisible(false); //show frame that request was successful
 				
 			}
@@ -160,7 +174,8 @@ public class NewRequestForm extends JFrame {
 		btnNewButton.setOpaque(true);
 		contentPane.add(btnNewButton);
 		
-		lblNewLabel_1 = new JLabel("CUS ID:");
+		lblNewLabel_1 = new JLabel();
+		lblNewLabel_1.setText("CUS ID: "+cusId);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_1.setBounds(33, 80, 126, 24);
 		contentPane.add(lblNewLabel_1);
@@ -173,7 +188,11 @@ public class NewRequestForm extends JFrame {
 		setVisible(false);
 		
 	}
-	
+
+	public static void grabId(int id) {
+		cusId=id;
+	}
+
 	public static void populateEqTypeList(String type) {
 		comboBox.addItem(type);
 	}
@@ -189,6 +208,9 @@ public class NewRequestForm extends JFrame {
 		System.out.println(selection);
 		return selection;
 		
-		
 	}
+//	
+//	public void retrieveEqidFromEname() {
+//		
+//	}
 }

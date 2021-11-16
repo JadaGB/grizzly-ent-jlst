@@ -46,8 +46,8 @@ public class Request {
 		this.cusID = cusID;
 		this.eid = eid;
 		this.requestDate = requestDate;
-		//this.quotation = quotation;
-		//this.confirmed = confirmed;
+		this.quotation = 0;
+		this.confirmed = false;
 	}
 	
 	public Request(Request obj) {

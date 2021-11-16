@@ -24,8 +24,8 @@ public class EmpDash extends JPanel {
 	private NewRequestForm newReq;
 	private SystemController controller;
 	private static JTable generalRequesttable;
-	private JTable table_1;
-	private JTable table_2;
+	private static JTable scheduledTable;
+	private static JTable pastTransactionsTable;
 
 	/**
 	 * Create the panel.
@@ -62,8 +62,8 @@ public class EmpDash extends JPanel {
 		JScrollPane scrollPane_1 = new JScrollPane();
 		panel_1.add(scrollPane_1);
 		
-		table_1 = new JTable();
-		scrollPane_1.setViewportView(table_1);
+		scheduledTable = new JTable();
+		scrollPane_1.setViewportView(scheduledTable);
 		
 		Panel panel_2 = new Panel();
 		tabbedPane.addTab("Past Transactions", null, panel_2, null);
@@ -71,8 +71,8 @@ public class EmpDash extends JPanel {
 		JScrollPane scrollPane_2 = new JScrollPane();
 		panel_2.add(scrollPane_2);
 		
-		table_2 = new JTable();
-		scrollPane_2.setViewportView(table_2);
+		pastTransactionsTable = new JTable();
+		scrollPane_2.setViewportView(pastTransactionsTable);
 		
 		JLabel lblNewLabel = new JLabel("DASHBOARD");
 		lblNewLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
@@ -82,10 +82,10 @@ public class EmpDash extends JPanel {
 		tabbedPane.addChangeListener(new ChangeListener() {
 	        public void stateChanged(ChangeEvent e) {
 	            if(tabbedPane.getSelectedIndex()==0) {
-	            	controller.getAllCustRequestsInfo(6);
+	            	controller.getAllRequestsInfo();
 	            }
 	            if(tabbedPane.getSelectedIndex()==1) {
-	            	controller.getAllScheduled(6);
+	            	controller.getAllScheduled();
 	            }
 	            if(tabbedPane.getSelectedIndex()==2) {
 	            	controller.getAllCustPastTransactions(6);
@@ -94,11 +94,23 @@ public class EmpDash extends JPanel {
 	        
 	    });
 		
-		setVisible(true);
+		
 	}
 
-	public static void populateCustomerRequestTable(String data[][]) {
+	
+	public static void populatescheduledTable(String data[][]) {
 
+		//JTable variable name.additemstorow[i](customerName, equipType, equipName, reqDate, quotation, confirmed);
+		String columns[] = { "Name", "Equipment Type","Equipment Name","Qoutation","Requested Date","Confirmed" };
+	    DefaultTableModel model = new DefaultTableModel(data,columns);
+	    scheduledTable.setModel(model);	 	 
+	    scheduledTable.setShowGrid(true);
+	    scheduledTable.setShowVerticalLines(true);	
+		}
+
+	
+	
+	public static void populateGeneralRequestTable(String data[][]) {
 	//JTable variable name.additemstorow[i](customerName, equipType, equipName, reqDate, quotation, confirmed);
 	String columns[] = { "Name", "Equipment Type","Equipment Name","Qoutation","Requested Date","Confirmed" };
     DefaultTableModel model = new DefaultTableModel(data,columns);
@@ -106,9 +118,24 @@ public class EmpDash extends JPanel {
 	 	generalRequesttable.setModel(model);	 	 
 	 	generalRequesttable.setShowGrid(true);
 	 	generalRequesttable.setShowVerticalLines(true);
+	
+	}
+	
+	
+	public static void populateCustomerTransactionTable(String data[][]) {
+
+	
+	//JTable variable name.additemstorow[i](customerName, equipType, equipName, reqDate, quotation, confirmed);
+	String columns[] = { "Name", "Equipment Type","Equipment Name","Qoutation","Requested Date","Confirmed" };
+    DefaultTableModel model = new DefaultTableModel(data,columns);
+
+    pastTransactionsTable.setModel(model);	 	 
+    pastTransactionsTable.setShowGrid(true);
+    pastTransactionsTable.setShowVerticalLines(true);
 	 	
 
 	
 	}
+
 	
 }
