@@ -25,8 +25,12 @@ public class ParentWindow extends JFrame {
 	private SystemController controller;
 
 	private JPanel contentPane;
-	private CusDash dash1;
-	private CusHome home1;
+	private CusDash cdash1;
+	private CusHome chome1;
+	private EmpDash edash1;
+	private EmpHome ehome1;
+	
+	//private static String userType;
 
 	/**
 	 * Launch the application.
@@ -48,7 +52,7 @@ public class ParentWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ParentWindow(SystemController c) {
+	public ParentWindow(SystemController c, String uType) {
 		controller = c;
 		
 		setLocationRelativeTo(null);
@@ -75,14 +79,29 @@ public class ParentWindow extends JFrame {
 		
 		panel_1.setVisible(false);
 		
-		dash1 = new CusDash(c);
-		dash1.setBounds(0, 0, 668, 439);
+		cdash1 = new CusDash(c);
+		cdash1.setBounds(0, 0, 668, 463);
 		
 		
-		home1 = new CusHome(c);
-		home1.setBounds(0, 0, 668, 439);
-		panel_1.add(home1);
-		panel_1.setVisible(true);
+		chome1 = new CusHome(c);
+		chome1.setBounds(0, 0, 668, 463);
+		
+		
+		edash1 = new EmpDash(c);
+		edash1.setBounds(0, 0, 668, 463);
+		
+		
+		ehome1 = new EmpHome(c);
+		ehome1.setBounds(0, 0, 668, 463);
+		
+		if (uType.equalsIgnoreCase("customer")) {
+			panel_1.add(chome1);
+			panel_1.setVisible(true);
+		}else if (uType.equalsIgnoreCase("employee")) {
+			
+			panel_1.add(ehome1);
+			panel_1.setVisible(true);
+		}
 		
 		JButton btnNewButton = new JButton("HOME");
 		btnNewButton.setForeground(Color.WHITE);
@@ -91,8 +110,15 @@ public class ParentWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				panel_1.removeAll();
 				
-				panel_1.add(home1);
-				panel_1.setVisible(true);
+				if (uType.equalsIgnoreCase("customer")) {
+					panel_1.add(chome1);
+					panel_1.setVisible(true);
+				}else if (uType.equalsIgnoreCase("employee")) {
+					panel_1.add(ehome1);
+					panel_1.setVisible(true);
+				}
+				
+				
 				
 				//Resets & updates 
 				revalidate();
@@ -112,8 +138,15 @@ public class ParentWindow extends JFrame {
 		btnDashboard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panel_1.removeAll();
-				panel_1.add(dash1);
 				
+				if (uType.equalsIgnoreCase("customer")) {
+					panel_1.add(cdash1);
+					panel_1.setVisible(true);
+					
+				}else if (uType.equalsIgnoreCase("employee")) {
+					panel_1.add(edash1);
+					panel_1.setVisible(true);
+				}
 				//might not need to call here called in signin //need to get from signin
 //				controller.getAllCustRequestsInfo(1); 
 				panel_1.setVisible(true);
@@ -153,4 +186,8 @@ public class ParentWindow extends JFrame {
 		
 		setVisible(false);
 	}
+	
+//	public static void getUserType(String uType) {
+//		userType = uType;
+//	}
 }
