@@ -37,7 +37,7 @@ public class CusHome extends JPanel {
 		lblNewLabel.setBounds(10, 10, 231, 46);
 		add(lblNewLabel);
 		
-		JButton btnNewButton = new JButton("INVOICE BALANCE: $20,000");
+		JButton btnNewButton = new JButton("INVOICE BALANCE: $0.00");
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnNewButton.setBounds(52, 66, 564, 73);
 		btnNewButton.setBorderPainted(false);
@@ -46,20 +46,22 @@ public class CusHome extends JPanel {
 		
 		JTextPane txtpnNewMessage = new JTextPane();
 		txtpnNewMessage.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txtpnNewMessage.setText("Display New Messages by chronological order");
-		txtpnNewMessage.setBounds(52, 182, 564, 222);
+		txtpnNewMessage.setText("Display Newest Messages ");
+		txtpnNewMessage.setBounds(52, 182, 564, 57);
 		add(txtpnNewMessage);
 		
 		newReq = new NewRequestForm(c);
 		newReq.setLocationRelativeTo(null);
+		newReq.setVisible(false);
 		
 		JButton btnNewButton_1 = new JButton("");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				newReq.setVisible(true);
 				
 				controller.getAllEquipmentTypes();
-
+				
 //				String sel = geteqTypeSelection();
 //				if (sel != null) {
 //					controller.getAllEquipmentofEqType(sel);
