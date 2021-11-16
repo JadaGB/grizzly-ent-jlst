@@ -37,7 +37,7 @@ public class Client {
 	
 	private void createConnection() {
 		try {
-			connectionSocket = new Socket("127.0.0.1",8888);
+			connectionSocket = new Socket("127.0.0.1",13000);
             connectionSocket.getOutputStream();
             objIs = new ObjectInputStream(connectionSocket.getInputStream());
             new BufferedReader(new InputStreamReader(objIs));

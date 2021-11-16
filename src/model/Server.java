@@ -38,7 +38,7 @@ public class Server extends Thread {
 		start();
 		try {
 			
-			serverSocket=new ServerSocket(8888);
+			serverSocket=new ServerSocket(13000);
 			clientCount=0;
 			System.out.println("The server has started "+date);
 			
